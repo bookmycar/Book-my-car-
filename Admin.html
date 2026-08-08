@@ -1,1 +1,364 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Book My Car - Admin</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f3f6fb;
+}
+
+header{
+    background:#007bff;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+.container{
+    width:95%;
+    max-width:1100px;
+    margin:20px auto;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 3px 10px #ddd;
+}
+
+.card h2{
+    color:#007bff;
+    margin:8px 0;
+}
+
+.box{
+    background:white;
+    margin-top:20px;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 3px 10px #ddd;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+th,td{
+    padding:12px;
+    border:1px solid #ddd;
+    text-align:left;
+}
+
+th{
+    background:#007bff;
+    color:white;
+}
+
+button{
+    padding:9px 12px;
+    border:0;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.confirm{
+    background:#28a745;
+    color:white;
+}
+
+.cancel{
+    background:#dc3545;
+    color:white;
+}
+
+@media(max-width:700px){
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>🚗 Book My Car</h1>
+
+<p>Admin Panel</p>
+
+</header>
+
+
+<div class="container">
+
+
+<div class="cards">
+
+<div class="card">
+
+<p>Total Booking</p>
+
+<h2 id="total">0</h2>
+
+</div>
+
+
+<div class="card">
+
+<p>Pending</p>
+
+<h2 id="pending">0</h2>
+
+</div>
+
+
+<div class="card">
+
+<p>Confirmed</p>
+
+<h2 id="confirmed">0</h2>
+
+</div>
+
+
+<div class="card">
+
+<p>Advance</p>
+
+<h2>₹<span id="advance">0</span></h2>
+
+</div>
+
+</div>
+
+
+
+<div class="box">
+
+<h2>📋 Customer Bookings</h2>
+
+<div style="overflow-x:auto">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Customer</th>
+<th>Mobile</th>
+<th>Car</th>
+<th>Date</th>
+<th>Time</th>
+<th>Advance</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="bookingTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+function loadBookings(){
+
+    let bookings =
+    JSON.parse(
+        localStorage.getItem("bookings")
+    ) || [];
+
+
+    let table =
+    document.getElementById("bookingTable");
+
+
+    table.innerHTML = "";
+
+
+    let pending = 0;
+
+    let confirmed = 0;
+
+    let advance = 0;
+
+
+    bookings.forEach(function(b,index){
+
+        if(b.status === "Pending"){
+            pending++;
+        }
+
+        if(b.status === "Confirmed"){
+            confirmed++;
+        }
+
+        advance += Number(b.advance || 0);
+
+
+        let row =
+        document.createElement("tr");
+
+
+        row.innerHTML = `
+
+        <td>${index + 1}</td>
+
+        <td>${b.customer || "-"}</td>
+
+        <td>${b.phone || "-"}</td>
+
+        <td>${b.car || "-"}</td>
+
+        <td>${b.date || "-"}</td>
+
+        <td>${b.time || "-"}</td>
+
+        <td>₹${b.advance || 0}</td>
+
+        <td>${b.status || "Pending"}</td>
+
+        <td>
+
+        <button
+        class="confirm"
+        onclick="confirmBooking(${index})">
+
+        Confirm
+
+        </button>
+
+        <button
+        class="cancel"
+        onclick="cancelBooking(${index})">
+
+        Cancel
+
+        </button>
+
+        </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+
+    document.getElementById("total").innerText =
+    bookings.length;
+
+
+    document.getElementById("pending").innerText =
+    pending;
+
+
+    document.getElementById("confirmed").innerText =
+    confirmed;
+
+
+    document.getElementById("advance").innerText =
+    advance;
+
+}
+
+
+
+function confirmBooking(index){
+
+    let bookings =
+    JSON.parse(
+        localStorage.getItem("bookings")
+    ) || [];
+
+
+    bookings[index].status =
+    "Confirmed";
+
+
+    localStorage.setItem(
+        "bookings",
+        JSON.stringify(bookings)
+    );
+
+
+    loadBookings();
+
+}
+
+
+
+function cancelBooking(index){
+
+    let bookings =
+    JSON.parse(
+        localStorage.getItem("bookings")
+    ) || [];
+
+
+    bookings[index].status =
+    "Cancelled";
+
+
+    localStorage.setItem(
+        "bookings",
+        JSON.stringify(bookings)
+    );
+
+
+    loadBookings();
+
+}
+
+
+loadBookings();
+
+</script>
+
+</body>
+</html>
