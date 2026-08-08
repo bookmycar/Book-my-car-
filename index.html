@@ -1,1 +1,326 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Book My Car</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f2f6ff;
+    color:#222;
+}
+
+header{
+    background:#007bff;
+    color:white;
+    padding:25px 15px;
+    text-align:center;
+}
+
+header h1{
+    margin:0;
+    font-size:32px;
+}
+
+header p{
+    margin:8px 0 0;
+}
+
+.container{
+    width:92%;
+    max-width:600px;
+    margin:25px auto;
+}
+
+.booking-box{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
+}
+
+.booking-box h2{
+    text-align:center;
+    margin-top:0;
+    color:#007bff;
+}
+
+label{
+    display:block;
+    margin-top:12px;
+    font-weight:bold;
+}
+
+input,select{
+    width:100%;
+    padding:13px;
+    margin-top:6px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:20px;
+    border:0;
+    border-radius:8px;
+    background:#007bff;
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+.admin-link{
+    display:block;
+    text-align:center;
+    margin-top:18px;
+    color:#007bff;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🚗 Book My Car</h1>
+    <p>आसान और भरोसेमंद Car Booking</p>
+</header>
+
+<div class="container">
+
+<div class="booking-box">
+
+<h2>🚘 Car Booking</h2>
+
+<label>Customer Name</label>
+<input
+    type="text"
+    id="customerName"
+    placeholder="अपना नाम लिखें"
+>
+
+<label>Mobile Number</label>
+<input
+    type="tel"
+    id="customerPhone"
+    placeholder="10 अंकों का मोबाइल नंबर"
+    maxlength="10"
+>
+
+<label>Car</label>
+<select id="carName">
+
+    <option value="">
+        Car चुनें
+    </option>
+
+    <option value="Swift Dzire">
+        Swift Dzire
+    </option>
+
+    <option value="Ertiga">
+        Ertiga
+    </option>
+
+    <option value="Innova">
+        Innova
+    </option>
+
+    <option value="Bolero">
+        Bolero
+    </option>
+
+    <option value="Scorpio">
+        Scorpio
+    </option>
+
+</select>
+
+<label>Booking Date</label>
+<input
+    type="date"
+    id="bookingDate"
+>
+
+<label>Booking Time</label>
+<input
+    type="time"
+    id="bookingTime"
+>
+
+<label>Advance Amount ₹</label>
+<input
+    type="number"
+    id="advanceAmount"
+    placeholder="Advance राशि"
+>
+
+<button
+    type="button"
+    onclick="saveCustomerBooking()"
+>
+    🚗 BOOK NOW
+</button>
+
+<a
+    class="admin-link"
+    href="Admin.html"
+>
+    🔐 Admin Panel
+</a>
+
+</div>
+
+</div>
+
+<footer>
+    © 2026 Book My Car
+</footer>
+
+
+<script>
+
+function saveCustomerBooking(){
+
+    const customer =
+        document.getElementById("customerName").value.trim();
+
+    const phone =
+        document.getElementById("customerPhone").value.trim();
+
+    const car =
+        document.getElementById("carName").value;
+
+    const date =
+        document.getElementById("bookingDate").value;
+
+    const time =
+        document.getElementById("bookingTime").value;
+
+    const advance =
+        Number(
+            document.getElementById("advanceAmount").value
+        ) || 0;
+
+
+    if(customer === ""){
+
+        alert("कृपया Customer Name भरें।");
+
+        return;
+    }
+
+
+    if(!/^[0-9]{10}$/.test(phone)){
+
+        alert("कृपया सही 10 अंकों का Mobile Number डालें।");
+
+        return;
+    }
+
+
+    if(car === ""){
+
+        alert("कृपया Car चुनें।");
+
+        return;
+    }
+
+
+    if(date === ""){
+
+        alert("कृपया Booking Date चुनें।");
+
+        return;
+    }
+
+
+    let bookings =
+        JSON.parse(
+            localStorage.getItem("bookings")
+        ) || [];
+
+
+    const newBooking = {
+
+        id: Date.now(),
+
+        customer: customer,
+
+        phone: phone,
+
+        car: car,
+
+        owner: "Pending",
+
+        driver: "Pending",
+
+        date: date,
+
+        time: time,
+
+        advance: advance,
+
+        status: "Pending"
+
+    };
+
+
+    bookings.push(newBooking);
+
+
+    localStorage.setItem(
+        "bookings",
+        JSON.stringify(bookings)
+    );
+
+
+    alert(
+        "✅ Booking सफल हो गई!\n\n" +
+        "Booking ID: " +
+        newBooking.id +
+        "\n\nStatus: Pending"
+    );
+
+
+    document.getElementById("customerName").value = "";
+
+    document.getElementById("customerPhone").value = "";
+
+    document.getElementById("carName").value = "";
+
+    document.getElementById("bookingDate").value = "";
+
+    document.getElementById("bookingTime").value = "";
+
+    document.getElementById("advanceAmount").value = "";
+
+}
+
+</script>
+
+</body>
+</html>
