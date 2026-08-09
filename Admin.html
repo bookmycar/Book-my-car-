@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Book My Car - Admin Panel</title>
 
 <style>
-
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -42,8 +38,6 @@ header p{
     margin:20px auto;
 }
 
-/* DASHBOARD */
-
 .dashboard{
     display:grid;
     grid-template-columns:repeat(4,1fr);
@@ -70,8 +64,6 @@ header p{
     font-size:28px;
 }
 
-/* MAIN BOX */
-
 .box{
     background:white;
     margin-top:20px;
@@ -84,8 +76,6 @@ header p{
     margin-top:0;
 }
 
-/* SEARCH */
-
 .search{
     width:100%;
     padding:13px;
@@ -94,8 +84,6 @@ header p{
     font-size:16px;
     margin-bottom:15px;
 }
-
-/* BOOKING CARD */
 
 .booking{
     border:1px solid #ddd;
@@ -163,8 +151,6 @@ header p{
     font-size:15px;
 }
 
-/* DRIVER / OWNER */
-
 .owner-box{
     margin-top:15px;
     padding:15px;
@@ -215,6 +201,11 @@ button{
     color:white;
 }
 
+.refresh{
+    background:#17a2b8;
+    color:white;
+}
+
 .no-booking{
     text-align:center;
     padding:30px;
@@ -226,9 +217,6 @@ footer{
     padding:25px;
     color:#777;
 }
-
-
-/* MOBILE */
 
 @media(max-width:700px){
 
@@ -243,13 +231,11 @@ footer{
     .container{
         width:92%;
     }
-
 }
 
 @media(max-width:400px){
 
     .dashboard{
-        grid-template-columns:1fr 1fr;
         gap:8px;
     }
 
@@ -260,660 +246,402 @@ footer{
     .card h2{
         font-size:23px;
     }
-
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
 <header>
-
 <h1>🚗 Book My Car</h1>
-
 <p>Admin Dashboard</p>
-
 </header>
 
-
-
 <div class="container">
-
-
-<!-- DASHBOARD -->
 
 <div class="dashboard">
 
 <div class="card">
-
 <h3>Total Booking</h3>
-
 <h2 id="totalBookings">0</h2>
-
 </div>
 
-
 <div class="card">
-
 <h3>Pending</h3>
-
 <h2 id="pendingBookings">0</h2>
-
 </div>
 
-
 <div class="card">
-
 <h3>Confirmed</h3>
-
 <h2 id="confirmedBookings">0</h2>
-
 </div>
-
 
 <div class="card">
-
 <h3>Total Advance</h3>
-
 <h2>₹<span id="totalAdvance">0</span></h2>
-
 </div>
 
 </div>
-
-
-
-<!-- BOOKINGS -->
 
 <div class="box">
 
 <h2>📋 Customer Bookings</h2>
 
+<button class="refresh" onclick="showBookings()">
+🔄 Refresh
+</button>
 
 <input
-
 type="text"
-
 id="search"
-
 class="search"
-
 placeholder="🔎 Customer, Mobile या Car खोजें..."
-
 onkeyup="showBookings()"
-
 >
-
 
 <div id="bookingList"></div>
 
 </div>
 
-
 </div>
 
-
 <footer>
-
 © 2026 Book My Car
-
 </footer>
-
-
 
 <script>
 
+let bookings = [];
 
-let bookings =
+function loadBookings(){
 
-JSON.parse(
+    bookings =
+    JSON.parse(
+        localStorage.getItem("bookings")
+    ) || [];
 
-localStorage.getItem("bookings")
+    bookings = bookings.map(function(b,index){
 
-) || [];
+        if(!b.id){
+            b.id = Date.now() + "-" + index;
+        }
 
+        if(!b.status){
+            b.status = "Pending";
+        }
 
+        return b;
+    });
 
-/* SHOW BOOKINGS */
+    localStorage.setItem(
+        "bookings",
+        JSON.stringify(bookings)
+    );
+}
 
 function showBookings(){
 
-
-    bookings =
-
-    JSON.parse(
-
-        localStorage.getItem("bookings")
-
-    ) || [];
-
+    loadBookings();
 
     const list =
-
     document.getElementById("bookingList");
 
-
     const search =
-
     document.getElementById("search")
-
     .value
-
-    .toLowerCase();
-
+    .toLowerCase()
+    .trim();
 
     list.innerHTML = "";
 
-
     let visibleBookings =
-
     bookings.filter(function(b){
 
         let text =
-
         (
-
-            b.customer +
-
+            (b.customer || "") +
             " " +
-
-            b.phone +
-
+            (b.phone || "") +
             " " +
-
-            b.car
-
+            (b.car || "") +
+            " " +
+            (b.date || "")
         ).toLowerCase();
 
-
         return text.includes(search);
-
     });
-
-
 
     if(visibleBookings.length === 0){
 
         list.innerHTML = `
-
         <div class="no-booking">
-
         📭 कोई Booking नहीं मिली
-
         </div>
-
         `;
 
+        updateDashboard();
+        return;
     }
-
-
 
     visibleBookings.forEach(function(b){
 
-
         let realIndex =
-
         bookings.findIndex(
-
             item => item.id === b.id
-
         );
 
-
-        let statusClass =
-
-        "pending";
-
+        let statusClass = "pending";
 
         if(b.status === "Confirmed"){
-
             statusClass = "confirmed";
-
         }
-
 
         if(b.status === "Cancelled"){
-
             statusClass = "cancelled";
-
         }
 
-
-
         const div =
-
         document.createElement("div");
 
-
         div.className = "booking";
-
 
         div.innerHTML = `
 
         <div class="booking-header">
 
             <h3>
-
             🚗 Booking #${realIndex + 1}
-
             </h3>
 
-
             <span class="status ${statusClass}">
-
             ${b.status || "Pending"}
-
             </span>
 
         </div>
 
-
-
         <div class="details">
 
-
             <div class="detail">
-
                 <strong>Customer</strong>
-
-                <span>
-
-                👤 ${b.customer || "-"}
-
-                </span>
-
+                <span>👤 ${escapeHTML(b.customer || "-")}</span>
             </div>
 
-
             <div class="detail">
-
                 <strong>Mobile</strong>
-
-                <span>
-
-                📞 ${b.phone || "-"}
-
-                </span>
-
+                <span>📞 ${escapeHTML(b.phone || "-")}</span>
             </div>
 
-
             <div class="detail">
-
                 <strong>Car</strong>
-
-                <span>
-
-                🚘 ${b.car || "-"}
-
-                </span>
-
+                <span>🚘 ${escapeHTML(b.car || "-")}</span>
             </div>
 
-
             <div class="detail">
-
                 <strong>Date</strong>
-
-                <span>
-
-                📅 ${b.date || "-"}
-
-                </span>
-
+                <span>📅 ${escapeHTML(b.date || "-")}</span>
             </div>
 
-
             <div class="detail">
-
                 <strong>Time</strong>
-
-                <span>
-
-                ⏰ ${b.time || "-"}
-
-                </span>
-
+                <span>⏰ ${escapeHTML(b.time || "-")}</span>
             </div>
-
 
             <div class="detail">
-
                 <strong>Advance</strong>
-
-                <span>
-
-                💰 ₹${b.advance || 0}
-
-                </span>
-
+                <span>💰 ₹${Number(b.advance || 0)}</span>
             </div>
-
 
         </div>
-
-
 
         <div class="owner-box">
 
         <h3>🚘 Owner / Driver</h3>
 
-
         <label>Car Owner Name</label>
 
         <input
-
         id="owner-${realIndex}"
-
-        value="${b.owner || ""}"
-
+        value="${escapeAttribute(b.owner || "")}"
         placeholder="Owner Name"
-
-
         >
-
 
         <label>Driver Name</label>
 
         <input
-
         id="driver-${realIndex}"
-
-        value="${b.driver || ""}"
-
+        value="${escapeAttribute(b.driver || "")}"
         placeholder="Driver Name"
-
-
         >
 
-
         <button
-
         class="save"
-
         onclick="saveOwnerDriver(${realIndex})">
-
         💾 Save Details
-
         </button>
 
-
         </div>
-
-
 
         <div>
 
-
         <button
-
         class="confirm"
-
         onclick="confirmBooking(${realIndex})">
-
         ✅ Confirm
-
         </button>
 
-
         <button
-
         class="cancel"
-
         onclick="cancelBooking(${realIndex})">
-
         ❌ Cancel
-
         </button>
-
 
         <button
-
         class="delete"
-
         onclick="deleteBooking(${realIndex})">
-
         🗑 Delete
-
         </button>
-
 
         </div>
-
         `;
 
-
         list.appendChild(div);
-
     });
 
-
     updateDashboard();
-
 }
-
-
-
-/* SAVE OWNER / DRIVER */
 
 function saveOwnerDriver(index){
 
-
     const owner =
-
     document.getElementById(
-
         "owner-" + index
-
     ).value;
-
 
     const driver =
-
     document.getElementById(
-
         "driver-" + index
-
     ).value;
 
-
     bookings[index].owner = owner;
-
     bookings[index].driver = driver;
 
-
     localStorage.setItem(
-
         "bookings",
-
         JSON.stringify(bookings)
-
     );
-
 
     alert("✅ Owner और Driver details save हो गईं।");
 
-
     showBookings();
-
 }
-
-
-
-/* CONFIRM */
 
 function confirmBooking(index){
 
-
-    bookings[index].status =
-
-    "Confirmed";
-
+    bookings[index].status = "Confirmed";
 
     localStorage.setItem(
-
         "bookings",
-
         JSON.stringify(bookings)
-
     );
 
+    alert("✅ Booking Confirmed!");
 
     showBookings();
-
 }
-
-
-
-/* CANCEL */
 
 function cancelBooking(index){
 
-
-    bookings[index].status =
-
-    "Cancelled";
-
+    bookings[index].status = "Cancelled";
 
     localStorage.setItem(
-
         "bookings",
-
         JSON.stringify(bookings)
-
     );
 
+    alert("❌ Booking Cancelled!");
 
     showBookings();
-
 }
-
-
-
-/* DELETE */
 
 function deleteBooking(index){
 
-
     if(
-
         confirm(
-
-            "क्या आप यह booking delete करना चाहते हैं?"
-
+            "⚠️ क्या आप यह booking permanently delete करना चाहते हैं?"
         )
-
     ){
-
 
         bookings.splice(index,1);
 
-
         localStorage.setItem(
-
             "bookings",
-
             JSON.stringify(bookings)
-
         );
 
+        alert("🗑 Booking delete हो गई।");
 
         showBookings();
-
     }
-
 }
-
-
-
-/* DASHBOARD */
 
 function updateDashboard(){
 
-
     document.getElementById(
-
         "totalBookings"
-
     ).innerText = bookings.length;
 
-
-
     let pending =
-
     bookings.filter(
-
-        b => b.status === "Pending"
-
+        b => !b.status || b.status === "Pending"
     ).length;
-
-
 
     let confirmed =
-
     bookings.filter(
-
         b => b.status === "Confirmed"
-
     ).length;
 
-
-
     let advance =
-
     bookings.reduce(
-
         function(total,b){
 
             return total +
-
             Number(b.advance || 0);
 
         },
-
         0
-
     );
 
-
-
     document.getElementById(
-
         "pendingBookings"
-
     ).innerText = pending;
 
-
-
     document.getElementById(
-
         "confirmedBookings"
-
     ).innerText = confirmed;
 
-
-
     document.getElementById(
-
         "totalAdvance"
-
     ).innerText = advance;
-
 }
 
+function escapeHTML(value){
 
+    return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
 
-/* START */
+function escapeAttribute(value){
+
+    return escapeHTML(value);
+}
 
 showBookings();
 
 </script>
 
-
 </body>
-
 </html>
