@@ -7,9 +7,7 @@
 <title>Book My Car</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -81,8 +79,8 @@ button{
     cursor:pointer;
 }
 
-button:hover{
-    background:#0056b3;
+button:disabled{
+    background:#888;
 }
 
 .admin-link{
@@ -132,44 +130,19 @@ footer{
 
 <label>Car</label>
 <select id="carName">
-
-    <option value="">
-        Car चुनें
-    </option>
-
-    <option value="Swift Dzire">
-        Swift Dzire
-    </option>
-
-    <option value="Ertiga">
-        Ertiga
-    </option>
-
-    <option value="Innova">
-        Innova
-    </option>
-
-    <option value="Bolero">
-        Bolero
-    </option>
-
-    <option value="Scorpio">
-        Scorpio
-    </option>
-
+    <option value="">Car चुनें</option>
+    <option value="Swift Dzire">Swift Dzire</option>
+    <option value="Ertiga">Ertiga</option>
+    <option value="Innova">Innova</option>
+    <option value="Bolero">Bolero</option>
+    <option value="Scorpio">Scorpio</option>
 </select>
 
 <label>Booking Date</label>
-<input
-    type="date"
-    id="bookingDate"
->
+<input type="date" id="bookingDate">
 
 <label>Booking Time</label>
-<input
-    type="time"
-    id="bookingTime"
->
+<input type="time" id="bookingTime">
 
 <label>Advance Amount ₹</label>
 <input
@@ -180,20 +153,17 @@ footer{
 
 <button
     type="button"
+    id="bookButton"
     onclick="saveCustomerBooking()"
 >
     🚗 BOOK NOW
 </button>
 
-<a
-    class="admin-link"
-    href="Admin.html"
->
+<a class="admin-link" href="Admin.html">
     🔐 Admin Panel
 </a>
 
 </div>
-
 </div>
 
 <footer>
@@ -201,9 +171,38 @@ footer{
 </footer>
 
 
-<script>
+<!-- FIREBASE -->
 
-function saveCustomerBooking(){
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDD-jSNG_HfhW4aTXtdf0kpdclaDVbgrNA",
+    authDomain: "book-my-car-a97cf.firebaseapp.com",
+    projectId: "book-my-car-a97cf",
+    storageBucket: "book-my-car-a97cf.firebasestorage.app",
+    messagingSenderId: "546652899903",
+    appId: "1:546652899903:web:c280a58db101e01d1d468a"
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+
+window.saveCustomerBooking = async function(){
 
     const customer =
         document.getElementById("customerName").value.trim();
@@ -227,98 +226,109 @@ function saveCustomerBooking(){
 
 
     if(customer === ""){
-
         alert("कृपया Customer Name भरें।");
-
         return;
     }
 
 
     if(!/^[0-9]{10}$/.test(phone)){
-
         alert("कृपया सही 10 अंकों का Mobile Number डालें।");
-
         return;
     }
 
 
     if(car === ""){
-
         alert("कृपया Car चुनें।");
-
         return;
     }
 
 
     if(date === ""){
-
         alert("कृपया Booking Date चुनें।");
-
         return;
     }
 
 
-    let bookings =
-        JSON.parse(
-            localStorage.getItem("bookings")
-        ) || [];
+    const button =
+        document.getElementById("bookButton");
+
+    button.disabled = true;
+
+    button.innerText = "⏳ Booking भेजी जा रही है...";
 
 
-    const newBooking = {
+    try{
 
-        id: Date.now(),
+        const bookingData = {
 
-        customer: customer,
+            customer: customer,
 
-        phone: phone,
+            phone: phone,
 
-        car: car,
+            car: car,
 
-        owner: "Pending",
+            owner: "Pending",
 
-        driver: "Pending",
+            driver: "Pending",
 
-        date: date,
+            date: date,
 
-        time: time,
+            time: time,
 
-        advance: advance,
+            advance: advance,
 
-        status: "Pending"
+            status: "Pending",
 
-    };
+            createdAt: serverTimestamp()
 
-
-    bookings.push(newBooking);
-
-
-    localStorage.setItem(
-        "bookings",
-        JSON.stringify(bookings)
-    );
+        };
 
 
-    alert(
-        "✅ Booking सफल हो गई!\n\n" +
-        "Booking ID: " +
-        newBooking.id +
-        "\n\nStatus: Pending"
-    );
+        const docRef =
+            await addDoc(
+                collection(db, "bookings"),
+                bookingData
+            );
 
 
-    document.getElementById("customerName").value = "";
+        alert(
+            "✅ Booking सफलतापूर्वक भेज दी गई!\n\n" +
+            "Booking ID: " +
+            docRef.id +
+            "\n\nStatus: Pending"
+        );
 
-    document.getElementById("customerPhone").value = "";
 
-    document.getElementById("carName").value = "";
+        document.getElementById("customerName").value = "";
 
-    document.getElementById("bookingDate").value = "";
+        document.getElementById("customerPhone").value = "";
 
-    document.getElementById("bookingTime").value = "";
+        document.getElementById("carName").value = "";
 
-    document.getElementById("advanceAmount").value = "";
+        document.getElementById("bookingDate").value = "";
 
-}
+        document.getElementById("bookingTime").value = "";
+
+        document.getElementById("advanceAmount").value = "";
+
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "❌ Booking save नहीं हुई।\n\n" +
+            "Firebase Firestore Rules/Settings check करें।"
+        );
+
+    }
+
+
+    button.disabled = false;
+
+    button.innerText = "🚗 BOOK NOW";
+
+};
 
 </script>
 
