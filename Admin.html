@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Book My Car - Admin Panel</title>
+<title>Book My Car - Admin Dashboard</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+    box-sizing:border-box;
+}
 
 body{
     margin:0;
@@ -17,15 +21,15 @@ body{
 }
 
 header{
-    background:#007bff;
+    background:linear-gradient(135deg,#007bff,#0056b3);
     color:white;
-    padding:20px 15px;
+    padding:22px 15px;
     text-align:center;
 }
 
 header h1{
     margin:0;
-    font-size:27px;
+    font-size:28px;
 }
 
 header p{
@@ -34,9 +38,11 @@ header p{
 
 .container{
     width:94%;
-    max-width:1100px;
+    max-width:1150px;
     margin:20px auto;
 }
+
+/* DASHBOARD */
 
 .dashboard{
     display:grid;
@@ -46,8 +52,8 @@ header p{
 
 .card{
     background:white;
-    padding:18px;
-    border-radius:12px;
+    padding:20px;
+    border-radius:14px;
     text-align:center;
     box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
@@ -55,20 +61,37 @@ header p{
 .card h3{
     margin:0;
     color:#666;
-    font-size:15px;
+    font-size:14px;
 }
 
 .card h2{
     margin:8px 0 0;
-    color:#007bff;
     font-size:28px;
 }
+
+.blue h2{
+    color:#007bff;
+}
+
+.orange h2{
+    color:#f39c12;
+}
+
+.green h2{
+    color:#28a745;
+}
+
+.red h2{
+    color:#dc3545;
+}
+
+/* MAIN BOX */
 
 .box{
     background:white;
     margin-top:20px;
     padding:20px;
-    border-radius:12px;
+    border-radius:14px;
     box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
@@ -76,21 +99,35 @@ header p{
     margin-top:0;
 }
 
+/* CONTROLS */
+
+.controls{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
 .search{
-    width:100%;
+    flex:1;
     padding:13px;
     border:1px solid #ddd;
     border-radius:8px;
     font-size:16px;
-    margin-bottom:15px;
 }
+
+.refresh{
+    background:#17a2b8;
+    color:white;
+}
+
+/* BOOKING */
 
 .booking{
     border:1px solid #ddd;
     border-radius:12px;
-    padding:16px;
+    padding:17px;
     margin-bottom:15px;
-    background:#fff;
+    background:white;
 }
 
 .booking-header{
@@ -106,7 +143,7 @@ header p{
 }
 
 .status{
-    padding:6px 10px;
+    padding:6px 12px;
     border-radius:20px;
     font-size:13px;
     font-weight:bold;
@@ -127,29 +164,34 @@ header p{
     color:#721c24;
 }
 
+/* DETAILS */
+
 .details{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:repeat(3,1fr);
     gap:10px;
     margin-top:15px;
 }
 
 .detail{
     background:#f7f9fc;
-    padding:10px;
-    border-radius:7px;
+    padding:11px;
+    border-radius:8px;
 }
 
 .detail strong{
     display:block;
-    font-size:13px;
+    font-size:12px;
     color:#666;
     margin-bottom:4px;
 }
 
 .detail span{
     font-size:15px;
+    word-break:break-word;
 }
+
+/* OWNER */
 
 .owner-box{
     margin-top:15px;
@@ -163,13 +205,25 @@ header p{
     color:#007bff;
 }
 
+.owner-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+label{
+    display:block;
+    font-size:13px;
+    font-weight:bold;
+    color:#555;
+}
+
 input{
     width:100%;
     padding:11px;
     border:1px solid #ddd;
     border-radius:7px;
     margin-top:6px;
-    margin-bottom:10px;
 }
 
 button{
@@ -179,6 +233,12 @@ button{
     cursor:pointer;
     font-weight:bold;
     margin:4px 3px 0 0;
+}
+
+.save{
+    background:#007bff;
+    color:white;
+    margin-top:12px;
 }
 
 .confirm{
@@ -191,25 +251,29 @@ button{
     color:white;
 }
 
-.save{
-    background:#007bff;
-    color:white;
-}
-
 .delete{
     background:#6c757d;
     color:white;
 }
 
-.refresh{
-    background:#17a2b8;
-    color:white;
-}
-
 .no-booking{
     text-align:center;
-    padding:30px;
+    padding:35px;
     color:#777;
+}
+
+.loading{
+    text-align:center;
+    padding:30px;
+    color:#007bff;
+}
+
+.error{
+    background:#f8d7da;
+    color:#721c24;
+    padding:15px;
+    border-radius:8px;
+    text-align:center;
 }
 
 footer{
@@ -218,19 +282,42 @@ footer{
     color:#777;
 }
 
-@media(max-width:700px){
+/* MOBILE */
+
+@media(max-width:800px){
 
     .dashboard{
         grid-template-columns:repeat(2,1fr);
     }
 
     .details{
-        grid-template-columns:1fr;
+        grid-template-columns:repeat(2,1fr);
     }
+
+}
+
+@media(max-width:600px){
 
     .container{
         width:92%;
     }
+
+    .controls{
+        flex-direction:column;
+    }
+
+    .details{
+        grid-template-columns:1fr;
+    }
+
+    .owner-grid{
+        grid-template-columns:1fr;
+    }
+
+    .booking-header{
+        align-items:flex-start;
+    }
+
 }
 
 @media(max-width:400px){
@@ -240,406 +327,945 @@ footer{
     }
 
     .card{
-        padding:13px 7px;
+        padding:14px 7px;
     }
 
     .card h2{
         font-size:23px;
     }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
 <header>
+
 <h1>🚗 Book My Car</h1>
-<p>Admin Dashboard</p>
+
+<p>Firebase Admin Dashboard</p>
+
 </header>
+
 
 <div class="container">
 
+
+<!-- DASHBOARD -->
+
 <div class="dashboard">
 
-<div class="card">
+<div class="card blue">
+
 <h3>Total Booking</h3>
+
 <h2 id="totalBookings">0</h2>
+
 </div>
 
-<div class="card">
+
+<div class="card orange">
+
 <h3>Pending</h3>
+
 <h2 id="pendingBookings">0</h2>
+
 </div>
 
-<div class="card">
+
+<div class="card green">
+
 <h3>Confirmed</h3>
+
 <h2 id="confirmedBookings">0</h2>
-</div>
-
-<div class="card">
-<h3>Total Advance</h3>
-<h2>₹<span id="totalAdvance">0</span></h2>
-</div>
 
 </div>
+
+
+<div class="card red">
+
+<h3>Cancelled</h3>
+
+<h2 id="cancelledBookings">0</h2>
+
+</div>
+
+</div>
+
+
+<!-- BOOKINGS -->
 
 <div class="box">
 
 <h2>📋 Customer Bookings</h2>
 
-<button class="refresh" onclick="showBookings()">
-🔄 Refresh
-</button>
+
+<div class="controls">
 
 <input
 type="text"
 id="search"
 class="search"
-placeholder="🔎 Customer, Mobile या Car खोजें..."
-onkeyup="showBookings()"
+placeholder="🔎 Customer, Mobile, Car या Date खोजें..."
+oninput="filterBookings()"
 >
 
-<div id="bookingList"></div>
+
+<button
+class="refresh"
+onclick="loadBookings()"
+>
+🔄 Refresh
+</button>
+
+</div>
+
+
+<div id="bookingList">
+
+<div class="loading">
+
+⏳ Firebase से bookings लोड हो रही हैं...
 
 </div>
 
 </div>
+
+</div>
+
+
+</div>
+
 
 <footer>
-© 2026 Book My Car
+
+© 2026 Book My Car | Admin Dashboard
+
 </footer>
 
-<script>
+
+
+<!-- FIREBASE -->
+
+<script type="module">
+
+
+import { initializeApp }
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+import {
+
+    getFirestore,
+
+    collection,
+
+    onSnapshot,
+
+    doc,
+
+    updateDoc,
+
+    deleteDoc
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyDD-jSNG_HfhW4aTXtdf0kpdclaDVbgrNA",
+
+    authDomain:
+    "book-my-car-a97cf.firebaseapp.com",
+
+    projectId:
+    "book-my-car-a97cf",
+
+    storageBucket:
+    "book-my-car-a97cf.firebasestorage.app",
+
+    messagingSenderId:
+    "546652899903",
+
+    appId:
+    "1:546652899903:web:c280a58db101e01d1d468a"
+
+};
+
+
+
+/* START FIREBASE */
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const db =
+    getFirestore(app);
+
+
 
 let bookings = [];
 
+
+
+/* LOAD FIREBASE BOOKINGS */
+
 function loadBookings(){
 
-    bookings =
-    JSON.parse(
-        localStorage.getItem("bookings")
-    ) || [];
+    const bookingList =
+        document.getElementById("bookingList");
 
-    bookings = bookings.map(function(b,index){
 
-        if(!b.id){
-            b.id = Date.now() + "-" + index;
+    bookingList.innerHTML = `
+
+        <div class="loading">
+
+        ⏳ Bookings लोड हो रही हैं...
+
+        </div>
+
+    `;
+
+
+    onSnapshot(
+
+        collection(db,"bookings"),
+
+        function(snapshot){
+
+            bookings = [];
+
+
+            snapshot.forEach(function(documentSnapshot){
+
+                bookings.push({
+
+                    id: documentSnapshot.id,
+
+                    ...documentSnapshot.data()
+
+                });
+
+            });
+
+
+            /* NEWEST FIRST */
+
+            bookings.sort(function(a,b){
+
+                return String(b.date || "")
+                .localeCompare(
+                    String(a.date || "")
+                );
+
+            });
+
+
+            showBookings();
+
+        },
+
+
+        function(error){
+
+            console.error(error);
+
+
+            bookingList.innerHTML = `
+
+                <div class="error">
+
+                ❌ Firebase से Booking लोड नहीं हुई।
+
+                <br><br>
+
+                Firestore Rules और internet connection check करें।
+
+                </div>
+
+            `;
+
         }
 
-        if(!b.status){
-            b.status = "Pending";
-        }
-
-        return b;
-    });
-
-    localStorage.setItem(
-        "bookings",
-        JSON.stringify(bookings)
     );
+
 }
+
+
+
+/* SHOW BOOKINGS */
 
 function showBookings(){
 
-    loadBookings();
-
     const list =
-    document.getElementById("bookingList");
+        document.getElementById("bookingList");
+
 
     const search =
-    document.getElementById("search")
-    .value
-    .toLowerCase()
-    .trim();
+        document.getElementById("search")
+        .value
+        .toLowerCase()
+        .trim();
+
 
     list.innerHTML = "";
 
+
     let visibleBookings =
-    bookings.filter(function(b){
+        bookings.filter(function(b){
 
-        let text =
-        (
-            (b.customer || "") +
-            " " +
-            (b.phone || "") +
-            " " +
-            (b.car || "") +
-            " " +
-            (b.date || "")
-        ).toLowerCase();
+            const text = (
 
-        return text.includes(search);
-    });
+                (b.customer || "") +
+
+                " " +
+
+                (b.phone || "") +
+
+                " " +
+
+                (b.car || "") +
+
+                " " +
+
+                (b.date || "") +
+
+                " " +
+
+                (b.time || "")
+
+            ).toLowerCase();
+
+
+            return text.includes(search);
+
+        });
+
+
 
     if(visibleBookings.length === 0){
 
         list.innerHTML = `
-        <div class="no-booking">
-        📭 कोई Booking नहीं मिली
-        </div>
+
+            <div class="no-booking">
+
+            📭 कोई Booking नहीं मिली
+
+            </div>
+
         `;
 
+
         updateDashboard();
+
         return;
+
     }
 
-    visibleBookings.forEach(function(b){
 
-        let realIndex =
-        bookings.findIndex(
-            item => item.id === b.id
-        );
 
-        let statusClass = "pending";
+    visibleBookings.forEach(function(b,index){
 
-        if(b.status === "Confirmed"){
-            statusClass = "confirmed";
+
+        let status =
+            b.status || "Pending";
+
+
+        let statusClass =
+            "pending";
+
+
+        if(status === "Confirmed"){
+
+            statusClass =
+                "confirmed";
+
         }
 
-        if(b.status === "Cancelled"){
-            statusClass = "cancelled";
+
+        if(status === "Cancelled"){
+
+            statusClass =
+                "cancelled";
+
         }
+
+
 
         const div =
-        document.createElement("div");
+            document.createElement("div");
 
-        div.className = "booking";
+
+        div.className =
+            "booking";
+
+
 
         div.innerHTML = `
 
         <div class="booking-header">
 
             <h3>
-            🚗 Booking #${realIndex + 1}
+
+            🚗 Booking #${index + 1}
+
             </h3>
 
+
             <span class="status ${statusClass}">
-            ${b.status || "Pending"}
+
+            ${escapeHTML(status)}
+
             </span>
 
         </div>
 
+
         <div class="details">
 
-            <div class="detail">
-                <strong>Customer</strong>
-                <span>👤 ${escapeHTML(b.customer || "-")}</span>
-            </div>
 
             <div class="detail">
-                <strong>Mobile</strong>
-                <span>📞 ${escapeHTML(b.phone || "-")}</span>
+
+                <strong>👤 Customer</strong>
+
+                <span>
+
+                ${escapeHTML(
+                    b.customer || "-"
+                )}
+
+                </span>
+
             </div>
 
-            <div class="detail">
-                <strong>Car</strong>
-                <span>🚘 ${escapeHTML(b.car || "-")}</span>
-            </div>
 
             <div class="detail">
-                <strong>Date</strong>
-                <span>📅 ${escapeHTML(b.date || "-")}</span>
+
+                <strong>📞 Mobile</strong>
+
+                <span>
+
+                ${escapeHTML(
+                    b.phone || "-"
+                )}
+
+                </span>
+
             </div>
 
-            <div class="detail">
-                <strong>Time</strong>
-                <span>⏰ ${escapeHTML(b.time || "-")}</span>
-            </div>
 
             <div class="detail">
-                <strong>Advance</strong>
-                <span>💰 ₹${Number(b.advance || 0)}</span>
+
+                <strong>🚘 Car</strong>
+
+                <span>
+
+                ${escapeHTML(
+                    b.car || "-"
+                )}
+
+                </span>
+
             </div>
+
+
+            <div class="detail">
+
+                <strong>📅 Date</strong>
+
+                <span>
+
+                ${escapeHTML(
+                    b.date || "-"
+                )}
+
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>⏰ Time</strong>
+
+                <span>
+
+                ${escapeHTML(
+                    b.time || "-"
+                )}
+
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>💰 Advance</strong>
+
+                <span>
+
+                ₹${Number(
+                    b.advance || 0
+                )}
+
+                </span>
+
+            </div>
+
 
         </div>
+
 
         <div class="owner-box">
 
-        <h3>🚘 Owner / Driver</h3>
+            <h3>
 
-        <label>Car Owner Name</label>
+            🚘 Owner / Driver
 
-        <input
-        id="owner-${realIndex}"
-        value="${escapeAttribute(b.owner || "")}"
-        placeholder="Owner Name"
-        >
+            </h3>
 
-        <label>Driver Name</label>
 
-        <input
-        id="driver-${realIndex}"
-        value="${escapeAttribute(b.driver || "")}"
-        placeholder="Driver Name"
-        >
+            <div class="owner-grid">
 
-        <button
-        class="save"
-        onclick="saveOwnerDriver(${realIndex})">
-        💾 Save Details
-        </button>
+
+                <div>
+
+                    <label>
+
+                    Car Owner Name
+
+                    </label>
+
+
+                    <input
+
+                    id="owner-${b.id}"
+
+                    value="${escapeAttribute(
+                        b.owner || ""
+                    )}"
+
+                    placeholder="Owner Name"
+
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+
+                    Driver Name
+
+                    </label>
+
+
+                    <input
+
+                    id="driver-${b.id}"
+
+                    value="${escapeAttribute(
+                        b.driver || ""
+                    )}"
+
+                    placeholder="Driver Name"
+
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <button
+
+            class="save"
+
+            onclick="saveOwnerDriver('${b.id}')"
+
+            >
+
+            💾 Save Details
+
+            </button>
+
 
         </div>
+
 
         <div>
 
-        <button
-        class="confirm"
-        onclick="confirmBooking(${realIndex})">
-        ✅ Confirm
-        </button>
 
-        <button
-        class="cancel"
-        onclick="cancelBooking(${realIndex})">
-        ❌ Cancel
-        </button>
+            <button
 
-        <button
-        class="delete"
-        onclick="deleteBooking(${realIndex})">
-        🗑 Delete
-        </button>
+            class="confirm"
+
+            onclick="confirmBooking('${b.id}')"
+
+            >
+
+            ✅ Confirm
+
+            </button>
+
+
+            <button
+
+            class="cancel"
+
+            onclick="cancelBooking('${b.id}')"
+
+            >
+
+            ❌ Cancel
+
+            </button>
+
+
+            <button
+
+            class="delete"
+
+            onclick="deleteBooking('${b.id}')"
+
+            >
+
+            🗑 Delete
+
+            </button>
+
 
         </div>
+
         `;
 
+
         list.appendChild(div);
+
     });
 
+
     updateDashboard();
+
 }
 
-function saveOwnerDriver(index){
 
-    const owner =
-    document.getElementById(
-        "owner-" + index
-    ).value;
 
-    const driver =
-    document.getElementById(
-        "driver-" + index
-    ).value;
+/* SEARCH */
 
-    bookings[index].owner = owner;
-    bookings[index].driver = driver;
-
-    localStorage.setItem(
-        "bookings",
-        JSON.stringify(bookings)
-    );
-
-    alert("✅ Owner और Driver details save हो गईं।");
-
-    showBookings();
-}
-
-function confirmBooking(index){
-
-    bookings[index].status = "Confirmed";
-
-    localStorage.setItem(
-        "bookings",
-        JSON.stringify(bookings)
-    );
-
-    alert("✅ Booking Confirmed!");
-
-    showBookings();
-}
-
-function cancelBooking(index){
-
-    bookings[index].status = "Cancelled";
-
-    localStorage.setItem(
-        "bookings",
-        JSON.stringify(bookings)
-    );
-
-    alert("❌ Booking Cancelled!");
-
-    showBookings();
-}
-
-function deleteBooking(index){
-
-    if(
-        confirm(
-            "⚠️ क्या आप यह booking permanently delete करना चाहते हैं?"
-        )
-    ){
-
-        bookings.splice(index,1);
-
-        localStorage.setItem(
-            "bookings",
-            JSON.stringify(bookings)
-        );
-
-        alert("🗑 Booking delete हो गई।");
+window.filterBookings =
+    function(){
 
         showBookings();
-    }
-}
+
+    };
+
+
+
+/* SAVE OWNER DRIVER */
+
+window.saveOwnerDriver =
+    async function(id){
+
+        const owner =
+            document.getElementById(
+                "owner-" + id
+            ).value.trim();
+
+
+        const driver =
+            document.getElementById(
+                "driver-" + id
+            ).value.trim();
+
+
+        try{
+
+            await updateDoc(
+
+                doc(
+                    db,
+                    "bookings",
+                    id
+                ),
+
+                {
+
+                    owner: owner,
+
+                    driver: driver
+
+                }
+
+            );
+
+
+            alert(
+                "✅ Owner और Driver details save हो गईं।"
+            );
+
+
+        }catch(error){
+
+            console.error(error);
+
+            alert(
+                "❌ Details save नहीं हुईं।"
+            );
+
+        }
+
+    };
+
+
+
+/* CONFIRM */
+
+window.confirmBooking =
+    async function(id){
+
+        try{
+
+            await updateDoc(
+
+                doc(
+                    db,
+                    "bookings",
+                    id
+                ),
+
+                {
+
+                    status:
+                    "Confirmed"
+
+                }
+
+            );
+
+
+            alert(
+                "✅ Booking Confirmed!"
+            );
+
+
+        }catch(error){
+
+            console.error(error);
+
+            alert(
+                "❌ Booking Confirm नहीं हुई।"
+            );
+
+        }
+
+    };
+
+
+
+/* CANCEL */
+
+window.cancelBooking =
+    async function(id){
+
+        if(
+            !confirm(
+                "क्या आप इस Booking को Cancel करना चाहते हैं?"
+            )
+        ){
+
+            return;
+
+        }
+
+
+        try{
+
+            await updateDoc(
+
+                doc(
+                    db,
+                    "bookings",
+                    id
+                ),
+
+                {
+
+                    status:
+                    "Cancelled"
+
+                }
+
+            );
+
+
+            alert(
+                "❌ Booking Cancelled!"
+            );
+
+
+        }catch(error){
+
+            console.error(error);
+
+            alert(
+                "❌ Booking Cancel नहीं हुई।"
+            );
+
+        }
+
+    };
+
+
+
+/* DELETE */
+
+window.deleteBooking =
+    async function(id){
+
+        if(
+            !confirm(
+                "⚠️ यह Booking permanently delete हो जाएगी। क्या आप जारी रखना चाहते हैं?"
+            )
+        ){
+
+            return;
+
+        }
+
+
+        try{
+
+            await deleteDoc(
+
+                doc(
+                    db,
+                    "bookings",
+                    id
+                )
+
+            );
+
+
+            alert(
+                "🗑 Booking delete हो गई।"
+            );
+
+
+        }catch(error){
+
+            console.error(error);
+
+            alert(
+                "❌ Booking delete नहीं हुई।"
+            );
+
+        }
+
+    };
+
+
+
+/* DASHBOARD */
 
 function updateDashboard(){
 
+    const total =
+        bookings.length;
+
+
+    const pending =
+        bookings.filter(function(b){
+
+            return !b.status ||
+                   b.status === "Pending";
+
+        }).length;
+
+
+    const confirmed =
+        bookings.filter(function(b){
+
+            return b.status === "Confirmed";
+
+        }).length;
+
+
+    const cancelled =
+        bookings.filter(function(b){
+
+            return b.status === "Cancelled";
+
+        }).length;
+
+
     document.getElementById(
         "totalBookings"
-    ).innerText = bookings.length;
+    ).innerText = total;
 
-    let pending =
-    bookings.filter(
-        b => !b.status || b.status === "Pending"
-    ).length;
-
-    let confirmed =
-    bookings.filter(
-        b => b.status === "Confirmed"
-    ).length;
-
-    let advance =
-    bookings.reduce(
-        function(total,b){
-
-            return total +
-            Number(b.advance || 0);
-
-        },
-        0
-    );
 
     document.getElementById(
         "pendingBookings"
     ).innerText = pending;
 
+
     document.getElementById(
         "confirmedBookings"
     ).innerText = confirmed;
 
+
     document.getElementById(
-        "totalAdvance"
-    ).innerText = advance;
+        "cancelledBookings"
+    ).innerText = cancelled;
+
 }
+
+
+
+/* SECURITY */
 
 function escapeHTML(value){
 
     return String(value)
+
     .replace(/&/g,"&amp;")
+
     .replace(/</g,"&lt;")
+
     .replace(/>/g,"&gt;")
+
     .replace(/"/g,"&quot;")
+
     .replace(/'/g,"&#039;");
+
 }
+
 
 function escapeAttribute(value){
 
     return escapeHTML(value);
+
 }
 
-showBookings();
+
+
+/* START */
+
+loadBookings();
 
 </script>
 
