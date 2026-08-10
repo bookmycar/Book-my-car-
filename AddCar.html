@@ -1,1 +1,525 @@
+<!DOCTYPE html><html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Book My Car - Add Your Car</title><style>
+*{box-sizing:border-box}
 
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f2f6ff;
+    color:#222;
+}
+
+header{
+    background:linear-gradient(135deg,#007bff,#0056d6);
+    color:white;
+    padding:25px 15px;
+    text-align:center;
+}
+
+header h1{
+    margin:0;
+    font-size:30px;
+}
+
+header p{
+    margin:8px 0 0;
+}
+
+.container{
+    width:92%;
+    max-width:600px;
+    margin:25px auto;
+}
+
+.box{
+    background:white;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,.12);
+}
+
+h2{
+    text-align:center;
+    color:#007bff;
+    margin-top:0;
+}
+
+label{
+    display:block;
+    margin-top:14px;
+    font-weight:bold;
+}
+
+input,select{
+    width:100%;
+    padding:13px;
+    margin-top:6px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:22px;
+    border:0;
+    border-radius:8px;
+    background:#007bff;
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+}
+
+button:disabled{
+    background:#888;
+}
+
+.note{
+    margin-top:15px;
+    padding:12px;
+    background:#eef5ff;
+    border-radius:8px;
+    text-align:center;
+    font-size:14px;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:18px;
+    color:#007bff;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+footer{
+    text-align:center;
+    color:#777;
+    padding:20px;
+}
+</style></head><body><header>
+    <h1>🚗 Book My Car</h1>
+    <p>अपनी Car हमारे साथ जोड़ें</p>
+</header><div class="container"><div class="box"><h2>🚘 Add Your Car</h2><label>Car Owner Name</label>
+<input
+type="text"
+id="ownerName"
+placeholder="Owner का नाम"
+
+«»
+
+<label>Owner Mobile Number</label>
+<input
+type="tel"
+id="ownerPhone"
+placeholder="10 अंकों का मोबाइल नंबर"
+maxlength="10"
+inputmode="numeric"
+
+«»
+
+<label>Car Model</label>
+<select id="carModel">
+
+<option value="">Car चुनें</option>
+<option value="Swift Dzire">Swift Dzire</option>
+<option value="Ertiga">Ertiga</option>
+<option value="Innova">Innova</option>
+<option value="Bolero">Bolero</option>
+<option value="Scorpio">Scorpio</option>
+<option value="Other">Other</option></select><label>Car Number</label>
+<input
+type="text"
+id="carNumber"
+placeholder="जैसे CG13AB1234"
+
+«»
+
+<label>Driver Name</label>
+<input
+type="text"
+id="driverName"
+placeholder="Driver का नाम"
+
+«»
+
+<label>Driver Mobile Number</label>
+<input
+type="tel"
+id="driverPhone"
+placeholder="10 अंकों का मोबाइल नंबर"
+maxlength="10"
+inputmode="numeric"
+
+«»
+
+<label>Car उपलब्ध स्थान</label>
+<input
+type="text"
+id="location"
+placeholder="जैसे: Sarangarh"
+
+«»
+
+<label>💰 Per Day Rate ₹</label>
+<input
+type="number"
+id="dayRate"
+placeholder="जैसे 2500"
+min="0"
+
+«»
+
+<label>💰 Per KM Rate ₹</label>
+<input
+type="number"
+id="kmRate"
+placeholder="जैसे 15"
+min="0"
+step="0.01"
+
+«»
+
+<label>💰 Outstation Rate ₹</label>
+<input
+type="number"
+id="outstationRate"
+placeholder="जैसे 3000"
+min="0"
+
+«»
+
+<button
+id="submitButton"
+onclick="submitCar()"
+
+«»
+
+🚗 CAR SUBMIT करें
+</button>
+
+<div class="note">
+Car की जानकारी submit करने के बाद Admin उसे check करेगा।
+Admin approval के बाद ही Car customer booking के लिए उपलब्ध होगी।
+</div><a
+href="index.html"
+class="back"
+
+«»
+
+⬅️ Customer Booking पर जाएँ
+</a>
+
+</div>
+</div><footer>
+© 2026 Book My Car
+</footer><script type="module">
+
+import { initializeApp }
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyDD-jSNG_HfhW4aTXtdf0kpdclaDVbgrNA",
+
+    authDomain:
+    "book-my-car-a97cf.firebaseapp.com",
+
+    projectId:
+    "book-my-car-a97cf",
+
+    storageBucket:
+    "book-my-car-a97cf.firebasestorage.app",
+
+    messagingSenderId:
+    "546652899903",
+
+    appId:
+    "1:546652899903:web:c280a58db101e01d1d468a"
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
+
+window.submitCar = async function(){
+
+    const ownerName =
+        document.getElementById("ownerName")
+        .value.trim();
+
+    const ownerPhone =
+        document.getElementById("ownerPhone")
+        .value.trim();
+
+    const carModel =
+        document.getElementById("carModel")
+        .value;
+
+    const carNumber =
+        document.getElementById("carNumber")
+        .value.trim()
+        .toUpperCase();
+
+    const driverName =
+        document.getElementById("driverName")
+        .value.trim();
+
+    const driverPhone =
+        document.getElementById("driverPhone")
+        .value.trim();
+
+    const location =
+        document.getElementById("location")
+        .value.trim();
+
+    const dayRate =
+        Number(
+            document.getElementById("dayRate").value
+        ) || 0;
+
+    const kmRate =
+        Number(
+            document.getElementById("kmRate").value
+        ) || 0;
+
+    const outstationRate =
+        Number(
+            document.getElementById("outstationRate").value
+        ) || 0;
+
+
+    if(ownerName === ""){
+
+        alert("कृपया Owner Name भरें।");
+        return;
+    }
+
+
+    if(!/^[0-9]{10}$/.test(ownerPhone)){
+
+        alert(
+            "कृपया सही 10 अंकों का Owner Mobile Number डालें।"
+        );
+
+        return;
+    }
+
+
+    if(carModel === ""){
+
+        alert("कृपया Car Model चुनें।");
+        return;
+    }
+
+
+    if(carNumber === ""){
+
+        alert("कृपया Car Number भरें।");
+        return;
+    }
+
+
+    if(driverName === ""){
+
+        alert("कृपया Driver Name भरें।");
+        return;
+    }
+
+
+    if(!/^[0-9]{10}$/.test(driverPhone)){
+
+        alert(
+            "कृपया सही 10 अंकों का Driver Mobile Number डालें।"
+        );
+
+        return;
+    }
+
+
+    if(location === ""){
+
+        alert("कृपया Car उपलब्ध स्थान भरें।");
+        return;
+    }
+
+
+    if(dayRate <= 0 &&
+       kmRate <= 0 &&
+       outstationRate <= 0){
+
+        alert(
+            "कम से कम एक Car Rate भरना जरूरी है।"
+        );
+
+        return;
+    }
+
+
+    const button =
+        document.getElementById(
+            "submitButton"
+        );
+
+
+    button.disabled = true;
+
+    button.innerText =
+        "⏳ जानकारी भेजी जा रही है...";
+
+
+    try{
+
+        const carData = {
+
+            ownerName:
+                ownerName,
+
+            ownerPhone:
+                ownerPhone,
+
+            carModel:
+                carModel,
+
+            carNumber:
+                carNumber,
+
+            driverName:
+                driverName,
+
+            driverPhone:
+                driverPhone,
+
+            location:
+                location,
+
+            dayRate:
+                dayRate,
+
+            kmRate:
+                kmRate,
+
+            outstationRate:
+                outstationRate,
+
+            status:
+                "Pending",
+
+            createdAt:
+                serverTimestamp()
+
+        };
+
+
+        const docRef =
+            await addDoc(
+
+                collection(
+                    db,
+                    "carRequests"
+                ),
+
+                carData
+
+            );
+
+
+        alert(
+
+            "✅ आपकी Car की जानकारी सफलतापूर्वक भेज दी गई!\n\n" +
+
+            "Request ID:\n" +
+
+            docRef.id +
+
+            "\n\n" +
+
+            "Status: Pending\n\n" +
+
+            "Admin approval के बाद आपकी Car उपलब्ध होगी।"
+
+        );
+
+
+        document.getElementById(
+            "ownerName"
+        ).value = "";
+
+        document.getElementById(
+            "ownerPhone"
+        ).value = "";
+
+        document.getElementById(
+            "carModel"
+        ).value = "";
+
+        document.getElementById(
+            "carNumber"
+        ).value = "";
+
+        document.getElementById(
+            "driverName"
+        ).value = "";
+
+        document.getElementById(
+            "driverPhone"
+        ).value = "";
+
+        document.getElementById(
+            "location"
+        ).value = "";
+
+        document.getElementById(
+            "dayRate"
+        ).value = "";
+
+        document.getElementById(
+            "kmRate"
+        ).value = "";
+
+        document.getElementById(
+            "outstationRate"
+        ).value = "";
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "❌ Car information save नहीं हुई।\n\n" +
+            "Firebase Firestore Rules check करें।"
+        );
+
+    }
+
+
+    button.disabled = false;
+
+    button.innerText =
+        "🚗 CAR SUBMIT करें";
+
+};
+
+</script></body>
+  </html>
