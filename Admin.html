@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Book My Car - Admin Dashboard</title>
-
-<style>
+<!DOCTYPE html><html lang="hi">
+<head><meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0"><title>Book My Car - Admin</title><style>
 
 *{
     box-sizing:border-box;
@@ -16,1413 +10,369 @@
 body{
     margin:0;
     font-family:Arial,sans-serif;
-    background:#f3f6fb;
-    color:#222;
+    background:#f2f6ff;
 }
 
 header{
-    background:linear-gradient(135deg,#007bff,#0056b3);
+    background:linear-gradient(135deg,#007bff,#0056d6);
     color:white;
-    padding:22px 15px;
+    padding:25px;
     text-align:center;
 }
 
 header h1{
     margin:0;
-    font-size:28px;
-}
-
-header p{
-    margin:7px 0 0;
 }
 
 .container{
     width:94%;
-    max-width:1150px;
-    margin:20px auto;
-}
-
-/* DASHBOARD */
-
-.dashboard{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
+    max-width:1100px;
+    margin:25px auto;
 }
 
 .card{
     background:white;
     padding:20px;
-    border-radius:14px;
-    text-align:center;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,.12);
+    margin-bottom:20px;
 }
-
-.card h3{
-    margin:0;
-    color:#666;
-    font-size:14px;
-}
-
-.card h2{
-    margin:8px 0 0;
-    font-size:28px;
-}
-
-.blue h2{
-    color:#007bff;
-}
-
-.orange h2{
-    color:#f39c12;
-}
-
-.green h2{
-    color:#28a745;
-}
-
-.red h2{
-    color:#dc3545;
-}
-
-/* MAIN BOX */
-
-.box{
-    background:white;
-    margin-top:20px;
-    padding:20px;
-    border-radius:14px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-
-.box h2{
-    margin-top:0;
-}
-
-/* CONTROLS */
-
-.controls{
-    display:flex;
-    gap:10px;
-    margin-bottom:15px;
-}
-
-.search{
-    flex:1;
-    padding:13px;
-    border:1px solid #ddd;
-    border-radius:8px;
-    font-size:16px;
-}
-
-.refresh{
-    background:#17a2b8;
-    color:white;
-}
-
-/* BOOKING */
 
 .booking{
     border:1px solid #ddd;
     border-radius:12px;
-    padding:17px;
+    padding:18px;
     margin-bottom:15px;
-    background:white;
 }
 
-.booking-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-}
-
-.booking-header h3{
-    margin:0;
-    color:#007bff;
-}
-
-.status{
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:bold;
-}
-
-.pending{
-    background:#fff3cd;
-    color:#856404;
-}
-
-.confirmed{
-    background:#d4edda;
-    color:#155724;
-}
-
-.cancelled{
-    background:#f8d7da;
-    color:#721c24;
-}
-
-/* DETAILS */
-
-.details{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-top:15px;
-}
-
-.detail{
-    background:#f7f9fc;
-    padding:11px;
-    border-radius:8px;
-}
-
-.detail strong{
-    display:block;
-    font-size:12px;
-    color:#666;
-    margin-bottom:4px;
-}
-
-.detail span{
-    font-size:15px;
-    word-break:break-word;
-}
-
-/* OWNER */
-
-.owner-box{
-    margin-top:15px;
-    padding:15px;
-    background:#eef6ff;
-    border-radius:10px;
-}
-
-.owner-box h3{
+.booking h3{
     margin-top:0;
     color:#007bff;
 }
 
-.owner-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
+.info{
+    line-height:1.8;
 }
 
-label{
-    display:block;
-    font-size:13px;
+.status{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:20px;
+    background:#fff3cd;
+    color:#856404;
     font-weight:bold;
-    color:#555;
-}
-
-input{
-    width:100%;
-    padding:11px;
-    border:1px solid #ddd;
-    border-radius:7px;
-    margin-top:6px;
 }
 
 button{
     border:0;
     padding:10px 14px;
     border-radius:7px;
+    color:white;
     cursor:pointer;
     font-weight:bold;
-    margin:4px 3px 0 0;
-}
-
-.save{
-    background:#007bff;
-    color:white;
-    margin-top:12px;
+    margin:5px 5px 0 0;
 }
 
 .confirm{
-    background:#28a745;
-    color:white;
+    background:#198754;
 }
 
 .cancel{
     background:#dc3545;
-    color:white;
+}
+
+.call{
+    background:#007bff;
 }
 
 .delete{
-    background:#6c757d;
-    color:white;
+    background:#555;
 }
 
-.no-booking{
-    text-align:center;
-    padding:35px;
-    color:#777;
-}
-
-.loading{
-    text-align:center;
-    padding:30px;
-    color:#007bff;
-}
-
-.error{
-    background:#f8d7da;
-    color:#721c24;
-    padding:15px;
-    border-radius:8px;
-    text-align:center;
-}
-
-/* FINANCE */
-
-.finance-box{
-    margin-top:15px;
-    padding:15px;
-    background:#f8fff9;
-    border:1px solid #d8f0dd;
-    border-radius:10px;
-}
-
-.finance-box h3{
-    margin-top:0;
-    color:#198754;
-}
-
-.finance-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-}
-
-.finance-item{
-    background:white;
-    padding:12px;
-    border-radius:8px;
-    border:1px solid #eee;
-}
-
-.finance-item strong{
+.back{
     display:block;
-    font-size:12px;
-    color:#666;
-    margin-bottom:4px;
-}
-
-.finance-item span{
-    font-size:17px;
+    text-align:center;
+    margin:20px;
+    color:#007bff;
+    text-decoration:none;
     font-weight:bold;
 }
 
-.commission-result{
-    color:#dc3545;
-}
-
-.owner-result{
-    color:#198754;
-}
-
-footer{
+.empty{
     text-align:center;
-    padding:25px;
+    padding:30px;
     color:#777;
 }
 
-/* MOBILE */
-
-@media(max-width:800px){
-
-    .dashboard{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .details{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .finance-grid{
-        grid-template-columns:1fr 1fr;
-    }
-
-}
-
-@media(max-width:600px){
-
-    .container{
-        width:92%;
-    }
-
-    .controls{
-        flex-direction:column;
-    }
-
-    .details{
-        grid-template-columns:1fr;
-    }
-
-    .owner-grid{
-        grid-template-columns:1fr;
-    }
-
-    .finance-grid{
-        grid-template-columns:1fr;
-    }
-
-    .booking-header{
-        align-items:flex-start;
-        flex-direction:column;
-    }
-
-}
-
-@media(max-width:400px){
-
-    .dashboard{
-        gap:8px;
-    }
-
-    .card{
-        padding:14px 7px;
-    }
-
-    .card h2{
-        font-size:23px;
-    }
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<header>
-
-<h1>🚗 Book My Car</h1>
-
-<p>Firebase Admin Dashboard</p>
-
-</header>
-
-
-<div class="container">
-
-
-<!-- DASHBOARD -->
-
-<div class="dashboard">
-
-<div class="card blue">
-
-<h3>Total Booking</h3>
-
-<h2 id="totalBookings">0</h2>
-
-</div>
-
-
-<div class="card orange">
-
-<h3>Pending</h3>
-
-<h2 id="pendingBookings">0</h2>
-
-</div>
-
-
-<div class="card green">
-
-<h3>Confirmed</h3>
-
-<h2 id="confirmedBookings">0</h2>
-
-</div>
-
-
-<div class="card red">
-
-<h3>Cancelled</h3>
-
-<h2 id="cancelledBookings">0</h2>
-
-</div>
-
-</div>
-
-
-<!-- BOOKINGS -->
-
-<div class="box">
-
-<h2>📋 Customer Bookings</h2>
-
-
-<div class="controls">
-
-<input
-type="text"
-id="search"
-class="search"
-placeholder="🔎 Customer, Mobile, Car या Date खोजें..."
-oninput="filterBookings()"
->
-
-
-<button
-class="refresh"
-onclick="loadBookings()"
->
-🔄 Refresh
-</button>
-
-</div>
-
-
-<div id="bookingList">
-
-<div class="loading">
-
-⏳ Firebase से bookings लोड हो रही हैं...
-
-</div>
-
-</div>
-
-</div>
-
-
-</div>
-
-
-<footer>
-
-© 2026 Book My Car | Admin Dashboard
-
-</footer>
-
-
-
-<!-- FIREBASE -->
-
-<script type="module">
-
+</style></head><body><header><h1>🔐 Book My Car Admin Panel</h1><p>Booking Management</p></header><div class="container"><div class="card"><h2>📋 All Bookings</h2><div id="bookingList">
+Loading...
+</div></div></div><a class="back" href="index.html">
+⬅️ Main Website पर वापस जाएँ
+</a><script type="module">
 
 import { initializeApp }
-
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-
 import {
-
     getFirestore,
-
     collection,
-
     onSnapshot,
-
     doc,
-
     updateDoc,
-
-    deleteDoc
-
+    deleteDoc,
+    query,
+    orderBy
 }
-
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-
-/* FIREBASE CONFIG */
-
 const firebaseConfig = {
 
-    apiKey:
-    "AIzaSyDD-jSNG_HfhW4aTXtdf0kpdclaDVbgrNA",
+    apiKey: "AIzaSyDD-jSNG_HfhW4aTXtdf0kpdclaDVbgrNA",
 
-    authDomain:
-    "book-my-car-a97cf.firebaseapp.com",
+    authDomain: "book-my-car-a97cf.firebaseapp.com",
 
-    projectId:
-    "book-my-car-a97cf",
+    projectId: "book-my-car-a97cf",
 
-    storageBucket:
-    "book-my-car-a97cf.firebasestorage.app",
+    storageBucket: "book-my-car-a97cf.firebasestorage.app",
 
-    messagingSenderId:
-    "546652899903",
+    messagingSenderId: "546652899903",
 
-    appId:
-    "1:546652899903:web:c280a58db101e01d1d468a"
-
+    appId: "1:546652899903:web:c280a58db101e01d1d468a"
 };
 
 
+const app = initializeApp(firebaseConfig);
 
-/* START FIREBASE */
-
-const app =
-    initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 
-const db =
-    getFirestore(app);
+const bookingList =
+document.getElementById("bookingList");
 
 
-let bookings = [];
-
-let unsubscribe = null;
-
-
-
-/* LOAD BOOKINGS */
-
-function loadBookings(){
-
-    const bookingList =
-        document.getElementById("bookingList");
+const bookingsQuery =
+query(
+    collection(db,"bookings"),
+    orderBy("createdAt","desc")
+);
 
 
-    bookingList.innerHTML = `
+onSnapshot(
 
-        <div class="loading">
+    bookingsQuery,
 
-        ⏳ Bookings लोड हो रही हैं...
+    (snapshot)=>{
 
-        </div>
+        bookingList.innerHTML = "";
 
-    `;
+        if(snapshot.empty){
 
+            bookingList.innerHTML =
+            '<div class="empty">अभी कोई Booking नहीं है।</div>';
 
-    if(unsubscribe){
-
-        unsubscribe();
-
-    }
-
-
-    unsubscribe = onSnapshot(
-
-        collection(db,"bookings"),
-
-        function(snapshot){
-
-            bookings = [];
+            return;
+        }
 
 
-            snapshot.forEach(function(documentSnapshot){
+        snapshot.forEach((bookingDoc)=>{
 
-                bookings.push({
+            const data =
+            bookingDoc.data();
 
-                    id: documentSnapshot.id,
-
-                    ...documentSnapshot.data()
-
-                });
-
-            });
+            const id =
+            bookingDoc.id;
 
 
-            bookings.sort(function(a,b){
+            const div =
+            document.createElement("div");
 
-                return String(b.date || "")
-                .localeCompare(
-                    String(a.date || "")
-                );
-
-            });
+            div.className = "booking";
 
 
-            showBookings();
+            div.innerHTML = `
 
-        },
+                <h3>
+                    🚗 ${escapeHTML(data.car || "Car")}
+                </h3>
 
+                <div class="info">
 
-        function(error){
+                    <b>Booking ID:</b>
+                    ${escapeHTML(id)}
+                    <br>
 
-            console.error(error);
+                    <b>Customer:</b>
+                    ${escapeHTML(data.customer || "")}
+                    <br>
 
+                    <b>Mobile:</b>
+                    ${escapeHTML(data.phone || "")}
+                    <br>
 
-            bookingList.innerHTML = `
+                    <b>Date:</b>
+                    ${escapeHTML(data.date || "")}
+                    <br>
 
-                <div class="error">
+                    <b>Time:</b>
+                    ${escapeHTML(data.time || "")}
+                    <br>
 
-                ❌ Firebase से Booking लोड नहीं हुई।
+                    <b>Advance:</b>
+                    ₹${Number(data.advance || 0)}
+                    <br>
 
-                <br><br>
+                    <b>Owner:</b>
+                    ${escapeHTML(data.owner || "Pending")}
+                    <br>
 
-                Firestore Rules और internet connection check करें।
+                    <b>Driver:</b>
+                    ${escapeHTML(data.driver || "Pending")}
+                    <br>
 
-                <br><br>
-
-                ${escapeHTML(error.message)}
+                    <b>Status:</b>
+                    <span class="status">
+                    ${escapeHTML(data.status || "Pending")}
+                    </span>
 
                 </div>
+
+                <br>
+
+                <button class="confirm"
+                onclick="confirmBooking('${id}')">
+                ✅ Confirm
+                </button>
+
+                <button class="cancel"
+                onclick="cancelBooking('${id}')">
+                ❌ Cancel
+                </button>
+
+                <a href="tel:${escapeHTML(data.phone || "")}">
+                <button class="call">
+                📞 Call Customer
+                </button>
+                </a>
+
+                <button class="delete"
+                onclick="deleteBooking('${id}')">
+                🗑️ Delete
+                </button>
 
             `;
 
-        }
 
-    );
-
-}
-
-
-
-/* SHOW BOOKINGS */
-
-function showBookings(){
-
-    const list =
-        document.getElementById("bookingList");
-
-
-    const search =
-        document.getElementById("search")
-        .value
-        .toLowerCase()
-        .trim();
-
-
-    list.innerHTML = "";
-
-
-    let visibleBookings =
-        bookings.filter(function(b){
-
-            const text = (
-
-                (b.customer || "") +
-
-                " " +
-
-                (b.phone || "") +
-
-                " " +
-
-                (b.car || "") +
-
-                " " +
-
-                (b.carNumber || "") +
-
-                " " +
-
-                (b.owner || "") +
-
-                " " +
-
-                (b.driver || "") +
-
-                " " +
-
-                (b.date || "") +
-
-                " " +
-
-                (b.time || "")
-
-            ).toLowerCase();
-
-
-            return text.includes(search);
+            bookingList.appendChild(div);
 
         });
 
+    },
 
+    (error)=>{
 
-    if(visibleBookings.length === 0){
+        console.error(error);
 
-        list.innerHTML = `
-
-            <div class="no-booking">
-
-            📭 कोई Booking नहीं मिली
-
-            </div>
-
-        `;
-
-
-        updateDashboard();
-
-        return;
+        bookingList.innerHTML =
+        "<div class='empty'>Bookings load नहीं हो सकीं। Firebase Rules check करें।</div>";
 
     }
 
+);
 
 
-    visibleBookings.forEach(function(b,index){
+window.confirmBooking =
+async function(id){
 
+    try{
 
-        let status =
-            b.status || "Pending";
-
-
-        let statusClass =
-            "pending";
-
-
-        if(status === "Confirmed"){
-
-            statusClass =
-                "confirmed";
-
-        }
-
-
-        if(status === "Cancelled"){
-
-            statusClass =
-                "cancelled";
-
-        }
-
-
-
-        const div =
-            document.createElement("div");
-
-
-        div.className =
-            "booking";
-
-
-
-        div.innerHTML = `
-
-        <div class="booking-header">
-
-            <h3>
-
-            🚗 Booking #${index + 1}
-
-            </h3>
-
-
-            <span class="status ${statusClass}">
-
-            ${escapeHTML(status)}
-
-            </span>
-
-        </div>
-
-
-        <!-- CUSTOMER DETAILS -->
-
-        <div class="details">
-
-
-            <div class="detail">
-
-                <strong>👤 Customer</strong>
-
-                <span>
-
-                ${escapeHTML(
-                    b.customer || "-"
-                )}
-
-                </span>
-
-            </div>
-
-
-            <div class="detail">
-
-                <strong>📞 Mobile</strong>
-
-                <span>
-
-                ${escapeHTML(
-                    b.phone || "-"
-                )}
-
-                </span>
-
-            </div>
-
-
-            <div class="detail">
-
-                <strong>🚘 Car</strong>
-
-                <span>
-
-                ${escapeHTML(
-                    b.car || "-"
-                )}
-
-                </span>
-
-            </div>
-
-
-            <div class="detail">
-
-                <strong>🔢 Car Number</strong>
-
-                <span>
-
-                ${escapeHTML(
-                    b.carNumber || "-"
-                )}
-
-                </span>
-
-            </div>
-
-
-            <div class="detail">
-
-                <strong>📅 Date</strong>
-
-                <span>
-
-                ${escapeHTML(
-                    b.date || "-"
-                )}
-
-                </span>
-
-            </div>
-
-
-            <div class="detail">
-
-                <strong>⏰ Time</strong>
-
-                <span>
-
-                ${escapeHTML(
-                    b.time || "-"
-                )}
-
-                </span>
-
-            </div>
-
-
-            <div class="detail">
-
-                <strong>📍 Pickup</strong>
-
-                <span>
-
-                ${escapeHTML(
-                    b.pickup || b.pickupLocation || "-"
-                )}
-
-                </span>
-
-            </div>
-
-
-            <div class="detail">
-
-                <strong>📍 Drop</strong>
-
-                <span>
-
-                ${escapeHTML(
-                    b.drop || b.dropLocation || "-"
-                )}
-
-                </span>
-
-            </div>
-
-
-            <div class="detail">
-
-                <strong>💳 Advance</strong>
-
-                <span>
-
-                ₹${Number(
-                    b.advance || 0
-                )}
-
-                </span>
-
-            </div>
-
-
-        </div>
-
-
-        <!-- OWNER / DRIVER -->
-
-        <div class="owner-box">
-
-            <h3>
-
-            🚘 Owner / Driver Details
-
-            </h3>
-
-
-            <div class="owner-grid">
-
-
-                <div>
-
-                    <label>
-
-                    Car Owner Name
-
-                    </label>
-
-
-                    <input
-
-                    id="owner-${b.id}"
-
-                    value="${escapeAttribute(
-                        b.owner || ""
-                    )}"
-
-                    placeholder="Owner Name"
-
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <label>
-
-                    Driver Name
-
-                    </label>
-
-
-                    <input
-
-                    id="driver-${b.id}"
-
-                    value="${escapeAttribute(
-                        b.driver || ""
-                    )}"
-
-                    placeholder="Driver Name"
-
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <label>
-
-                    Car Number
-
-                    </label>
-
-
-                    <input
-
-                    id="carNumber-${b.id}"
-
-                    value="${escapeAttribute(
-                        b.carNumber || ""
-                    )}"
-
-                    placeholder="CG 00 XX 0000"
-
-                    >
-
-                </div>
-
-
-                <div>
-
-                    <label>
-
-                    Owner Mobile
-
-                    </label>
-
-
-                    <input
-
-                    id="ownerPhone-${b.id}"
-
-                    value="${escapeAttribute(
-                        b.ownerPhone || ""
-                    )}"
-
-                    placeholder="Owner Mobile Number"
-
-                    type="tel"
-
-                    >
-
-                </div>
-
-
-            </div>
-
-
-            <!-- FINANCE -->
-
-            <div class="finance-box">
-
-                <h3>
-
-                💰 Rent & Commission
-
-                </h3>
-
-
-                <div class="finance-grid">
-
-
-                    <div class="finance-item">
-
-                        <strong>
-
-                        Total Car Rent ₹
-
-                        </strong>
-
-
-                        <input
-
-                        id="rent-${b.id}"
-
-                        value="${Number(
-                            b.rent || b.amount || 0
-                        )}"
-
-                        type="number"
-
-                        min="0"
-
-                        placeholder="Total Rent"
-
-                        oninput="calculateCommission('${b.id}')"
-
-                        >
-
-                    </div>
-
-
-                    <div class="finance-item">
-
-                        <strong>
-
-                        Commission %
-
-                        </strong>
-
-
-                        <input
-
-                        id="commissionPercent-${b.id}"
-
-                        value="${Number(
-                            b.commissionPercent || 10
-                        )}"
-
-                        type="number"
-
-                        min="0"
-
-                        max="100"
-
-                        step="0.1"
-
-                        oninput="calculateCommission('${b.id}')"
-
-                        >
-
-                    </div>
-
-
-                    <div class="finance-item">
-
-                        <strong>
-
-                        Commission Amount
-
-                        </strong>
-
-
-                        <span
-
-                        id="commissionAmount-${b.id}"
-
-                        class="commission-result"
-
-                        >
-
-                        ₹${Number(
-                            b.commissionAmount || 0
-                        ).toFixed(2)}
-
-                        </span>
-
-                    </div>
-
-
-                    <div class="finance-item">
-
-                        <strong>
-
-                        Owner को मिलेगा
-
-                        </strong>
-
-
-                        <span
-
-                        id="ownerAmount-${b.id}"
-
-                        class="owner-result"
-
-                        >
-
-                        ₹${Number(
-                            b.ownerAmount ||
-                            (
-                                Number(b.rent || b.amount || 0)
-                                -
-                                Number(b.commissionAmount || 0)
-                            )
-                        ).toFixed(2)}
-
-                        </span>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-            <button
-
-            class="save"
-
-            onclick="saveBookingDetails('${b.id}')"
-
-            >
-
-            💾 Save All Details
-
-            </button>
-
-
-        </div>
-
-
-        <!-- ACTIONS -->
-
-        <div>
-
-
-            <button
-
-            class="confirm"
-
-            onclick="confirmBooking('${b.id}')"
-
-            >
-
-            ✅ Confirm
-
-            </button>
-
-
-            <button
-
-            class="cancel"
-
-            onclick="cancelBooking('${b.id}')"
-
-            >
-
-            ❌ Cancel
-
-            </button>
-
-
-            <button
-
-            class="delete"
-
-            onclick="deleteBooking('${b.id}')"
-
-            >
-
-            🗑 Delete
-
-            </button>
-
-
-        </div>
-
-        `;
-
-
-        list.appendChild(div);
-
-    });
-
-
-    updateDashboard();
-
-}
-
-
-
-/* COMMISSION CALCULATION */
-
-window.calculateCommission =
-function(id){
-
-    const rentInput =
-        document.getElementById(
-            "rent-" + id
+        await updateDoc(
+            doc(db,"bookings",id),
+            {
+                status:"Confirmed"
+            }
         );
 
+        alert("✅ Booking Confirm हो गई।");
 
-    const percentInput =
-        document.getElementById(
-            "commissionPercent-" + id
-        );
+    }catch(error){
 
+        console.error(error);
 
-    const commissionOutput =
-        document.getElementById(
-            "commissionAmount-" + id
-        );
+        alert("Booking Confirm नहीं हो सकी।");
 
-
-    const ownerOutput =
-        document.getElementById(
-            "ownerAmount-" + id
-        );
-
-
-    const rent =
-        Number(rentInput.value) || 0;
-
-
-    const percent =
-        Number(percentInput.value) || 0;
-
-
-    const commission =
-        rent * percent / 100;
-
-
-    const ownerAmount =
-        rent - commission;
-
-
-    commissionOutput.innerText =
-        "₹" + commission.toFixed(2);
-
-
-    ownerOutput.innerText =
-        "₹" + ownerAmount.toFixed(2);
+    }
 
 };
 
 
-
-/* SAVE ALL DETAILS */
-
-window.saveBookingDetails =
+window.cancelBooking =
 async function(id){
 
-    const owner =
-        document.getElementById(
-            "owner-" + id
-        ).value.trim();
-
-
-    const driver =
-        document.getElementById(
-            "driver-" + id
-        ).value.trim();
-
-
-    const carNumber =
-        document.getElementById(
-            "carNumber-" + id
-        ).value.trim();
-
-
-    const ownerPhone =
-        document.getElementById(
-            "ownerPhone-" + id
-        ).value.trim();
-
-
-    const rent =
-        Number(
-            document.getElementById(
-                "rent-" + id
-            ).value
-        ) || 0;
-
-
-    const commissionPercent =
-        Number(
-            document.getElementById(
-                "commissionPercent-" + id
-            ).value
-        ) || 0;
-
-
-    const commissionAmount =
-        rent *
-        commissionPercent /
-        100;
-
-
-    const ownerAmount =
-        rent -
-        commissionAmount;
+    if(!confirm("क्या आप यह Booking Cancel करना चाहते हैं?")){
+        return;
+    }
 
 
     try{
 
         await updateDoc(
-
-            doc(
-                db,
-                "bookings",
-                id
-            ),
-
+            doc(db,"bookings",id),
             {
+                status:"Cancelled"
+            }
+        );
 
-                owner:
-                owner,
+        alert("❌ Booking Cancel हो गई।");
 
-                driver:
-                driver,
+    }catch(error){
 
-                carNumber:
-                carNumber,
+        console.error(error);
 
-                ownerPhone:
-                ownerPhone,
+        alert("Booking Cancel नहीं हो सकी।");
 
-                rent:
-                rent,
+    }
 
-                commissionPercent:
-                commissionPercent,
+};
 
-                com
+
+window.deleteBooking =
+async function(id){
+
+    if(!confirm("क्या आप इस Booking को Delete करना चाहते हैं?")){
+        return;
+    }
+
+
+    try{
+
+        await deleteDoc(
+            doc(db,"bookings",id)
+        );
+
+        alert("🗑️ Booking Delete हो गई।");
+
+    }catch(error){
+
+        console.error(error);
+
+        alert("Booking Delete नहीं हो सकी।");
+
+    }
+
+};
+
+
+function escapeHTML(value){
+
+    return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+</script></body>
+</html>
