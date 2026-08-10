@@ -276,6 +276,54 @@ button{
     text-align:center;
 }
 
+/* FINANCE */
+
+.finance-box{
+    margin-top:15px;
+    padding:15px;
+    background:#f8fff9;
+    border:1px solid #d8f0dd;
+    border-radius:10px;
+}
+
+.finance-box h3{
+    margin-top:0;
+    color:#198754;
+}
+
+.finance-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.finance-item{
+    background:white;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #eee;
+}
+
+.finance-item strong{
+    display:block;
+    font-size:12px;
+    color:#666;
+    margin-bottom:4px;
+}
+
+.finance-item span{
+    font-size:17px;
+    font-weight:bold;
+}
+
+.commission-result{
+    color:#dc3545;
+}
+
+.owner-result{
+    color:#198754;
+}
+
 footer{
     text-align:center;
     padding:25px;
@@ -292,6 +340,10 @@ footer{
 
     .details{
         grid-template-columns:repeat(2,1fr);
+    }
+
+    .finance-grid{
+        grid-template-columns:1fr 1fr;
     }
 
 }
@@ -314,8 +366,13 @@ footer{
         grid-template-columns:1fr;
     }
 
+    .finance-grid{
+        grid-template-columns:1fr;
+    }
+
     .booking-header{
         align-items:flex-start;
+        flex-direction:column;
     }
 
 }
@@ -514,12 +571,13 @@ const db =
     getFirestore(app);
 
 
-
 let bookings = [];
 
+let unsubscribe = null;
 
 
-/* LOAD FIREBASE BOOKINGS */
+
+/* LOAD BOOKINGS */
 
 function loadBookings(){
 
@@ -538,7 +596,14 @@ function loadBookings(){
     `;
 
 
-    onSnapshot(
+    if(unsubscribe){
+
+        unsubscribe();
+
+    }
+
+
+    unsubscribe = onSnapshot(
 
         collection(db,"bookings"),
 
@@ -559,8 +624,6 @@ function loadBookings(){
 
             });
 
-
-            /* NEWEST FIRST */
 
             bookings.sort(function(a,b){
 
@@ -591,6 +654,10 @@ function loadBookings(){
                 <br><br>
 
                 Firestore Rules और internet connection check करें।
+
+                <br><br>
+
+                ${escapeHTML(error.message)}
 
                 </div>
 
@@ -636,6 +703,18 @@ function showBookings(){
                 " " +
 
                 (b.car || "") +
+
+                " " +
+
+                (b.carNumber || "") +
+
+                " " +
+
+                (b.owner || "") +
+
+                " " +
+
+                (b.driver || "") +
 
                 " " +
 
@@ -732,6 +811,8 @@ function showBookings(){
         </div>
 
 
+        <!-- CUSTOMER DETAILS -->
+
         <div class="details">
 
 
@@ -782,6 +863,21 @@ function showBookings(){
 
             <div class="detail">
 
+                <strong>🔢 Car Number</strong>
+
+                <span>
+
+                ${escapeHTML(
+                    b.carNumber || "-"
+                )}
+
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
                 <strong>📅 Date</strong>
 
                 <span>
@@ -812,7 +908,37 @@ function showBookings(){
 
             <div class="detail">
 
-                <strong>💰 Advance</strong>
+                <strong>📍 Pickup</strong>
+
+                <span>
+
+                ${escapeHTML(
+                    b.pickup || b.pickupLocation || "-"
+                )}
+
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>📍 Drop</strong>
+
+                <span>
+
+                ${escapeHTML(
+                    b.drop || b.dropLocation || "-"
+                )}
+
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>💳 Advance</strong>
 
                 <span>
 
@@ -828,11 +954,13 @@ function showBookings(){
         </div>
 
 
+        <!-- OWNER / DRIVER -->
+
         <div class="owner-box">
 
             <h3>
 
-            🚘 Owner / Driver
+            🚘 Owner / Driver Details
 
             </h3>
 
@@ -888,6 +1016,194 @@ function showBookings(){
                 </div>
 
 
+                <div>
+
+                    <label>
+
+                    Car Number
+
+                    </label>
+
+
+                    <input
+
+                    id="carNumber-${b.id}"
+
+                    value="${escapeAttribute(
+                        b.carNumber || ""
+                    )}"
+
+                    placeholder="CG 00 XX 0000"
+
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+
+                    Owner Mobile
+
+                    </label>
+
+
+                    <input
+
+                    id="ownerPhone-${b.id}"
+
+                    value="${escapeAttribute(
+                        b.ownerPhone || ""
+                    )}"
+
+                    placeholder="Owner Mobile Number"
+
+                    type="tel"
+
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <!-- FINANCE -->
+
+            <div class="finance-box">
+
+                <h3>
+
+                💰 Rent & Commission
+
+                </h3>
+
+
+                <div class="finance-grid">
+
+
+                    <div class="finance-item">
+
+                        <strong>
+
+                        Total Car Rent ₹
+
+                        </strong>
+
+
+                        <input
+
+                        id="rent-${b.id}"
+
+                        value="${Number(
+                            b.rent || b.amount || 0
+                        )}"
+
+                        type="number"
+
+                        min="0"
+
+                        placeholder="Total Rent"
+
+                        oninput="calculateCommission('${b.id}')"
+
+                        >
+
+                    </div>
+
+
+                    <div class="finance-item">
+
+                        <strong>
+
+                        Commission %
+
+                        </strong>
+
+
+                        <input
+
+                        id="commissionPercent-${b.id}"
+
+                        value="${Number(
+                            b.commissionPercent || 10
+                        )}"
+
+                        type="number"
+
+                        min="0"
+
+                        max="100"
+
+                        step="0.1"
+
+                        oninput="calculateCommission('${b.id}')"
+
+                        >
+
+                    </div>
+
+
+                    <div class="finance-item">
+
+                        <strong>
+
+                        Commission Amount
+
+                        </strong>
+
+
+                        <span
+
+                        id="commissionAmount-${b.id}"
+
+                        class="commission-result"
+
+                        >
+
+                        ₹${Number(
+                            b.commissionAmount || 0
+                        ).toFixed(2)}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="finance-item">
+
+                        <strong>
+
+                        Owner को मिलेगा
+
+                        </strong>
+
+
+                        <span
+
+                        id="ownerAmount-${b.id}"
+
+                        class="owner-result"
+
+                        >
+
+                        ₹${Number(
+                            b.ownerAmount ||
+                            (
+                                Number(b.rent || b.amount || 0)
+                                -
+                                Number(b.commissionAmount || 0)
+                            )
+                        ).toFixed(2)}
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
             </div>
 
 
@@ -895,17 +1211,19 @@ function showBookings(){
 
             class="save"
 
-            onclick="saveOwnerDriver('${b.id}')"
+            onclick="saveBookingDetails('${b.id}')"
 
             >
 
-            💾 Save Details
+            💾 Save All Details
 
             </button>
 
 
         </div>
 
+
+        <!-- ACTIONS -->
 
         <div>
 
@@ -965,309 +1283,146 @@ function showBookings(){
 
 
 
-/* SEARCH */
+/* COMMISSION CALCULATION */
 
-window.filterBookings =
-    function(){
+window.calculateCommission =
+function(id){
 
-        showBookings();
+    const rentInput =
+        document.getElementById(
+            "rent-" + id
+        );
 
-    };
+
+    const percentInput =
+        document.getElementById(
+            "commissionPercent-" + id
+        );
+
+
+    const commissionOutput =
+        document.getElementById(
+            "commissionAmount-" + id
+        );
+
+
+    const ownerOutput =
+        document.getElementById(
+            "ownerAmount-" + id
+        );
+
+
+    const rent =
+        Number(rentInput.value) || 0;
+
+
+    const percent =
+        Number(percentInput.value) || 0;
+
+
+    const commission =
+        rent * percent / 100;
+
+
+    const ownerAmount =
+        rent - commission;
+
+
+    commissionOutput.innerText =
+        "₹" + commission.toFixed(2);
+
+
+    ownerOutput.innerText =
+        "₹" + ownerAmount.toFixed(2);
+
+};
 
 
 
-/* SAVE OWNER DRIVER */
+/* SAVE ALL DETAILS */
 
-window.saveOwnerDriver =
-    async function(id){
+window.saveBookingDetails =
+async function(id){
 
-        const owner =
+    const owner =
+        document.getElementById(
+            "owner-" + id
+        ).value.trim();
+
+
+    const driver =
+        document.getElementById(
+            "driver-" + id
+        ).value.trim();
+
+
+    const carNumber =
+        document.getElementById(
+            "carNumber-" + id
+        ).value.trim();
+
+
+    const ownerPhone =
+        document.getElementById(
+            "ownerPhone-" + id
+        ).value.trim();
+
+
+    const rent =
+        Number(
             document.getElementById(
-                "owner-" + id
-            ).value.trim();
+                "rent-" + id
+            ).value
+        ) || 0;
 
 
-        const driver =
+    const commissionPercent =
+        Number(
             document.getElementById(
-                "driver-" + id
-            ).value.trim();
+                "commissionPercent-" + id
+            ).value
+        ) || 0;
 
 
-        try{
+    const commissionAmount =
+        rent *
+        commissionPercent /
+        100;
 
-            await updateDoc(
 
-                doc(
-                    db,
-                    "bookings",
-                    id
-                ),
+    const ownerAmount =
+        rent -
+        commissionAmount;
 
-                {
 
-                    owner: owner,
+    try{
 
-                    driver: driver
+        await updateDoc(
 
-                }
+            doc(
+                db,
+                "bookings",
+                id
+            ),
 
-            );
+            {
 
+                owner:
+                owner,
 
-            alert(
-                "✅ Owner और Driver details save हो गईं।"
-            );
+                driver:
+                driver,
 
+                carNumber:
+                carNumber,
 
-        }catch(error){
+                ownerPhone:
+                ownerPhone,
 
-            console.error(error);
+                rent:
+                rent,
 
-            alert(
-                "❌ Details save नहीं हुईं।"
-            );
+                commissionPercent:
+                commissionPercent,
 
-        }
-
-    };
-
-
-
-/* CONFIRM */
-
-window.confirmBooking =
-    async function(id){
-
-        try{
-
-            await updateDoc(
-
-                doc(
-                    db,
-                    "bookings",
-                    id
-                ),
-
-                {
-
-                    status:
-                    "Confirmed"
-
-                }
-
-            );
-
-
-            alert(
-                "✅ Booking Confirmed!"
-            );
-
-
-        }catch(error){
-
-            console.error(error);
-
-            alert(
-                "❌ Booking Confirm नहीं हुई।"
-            );
-
-        }
-
-    };
-
-
-
-/* CANCEL */
-
-window.cancelBooking =
-    async function(id){
-
-        if(
-            !confirm(
-                "क्या आप इस Booking को Cancel करना चाहते हैं?"
-            )
-        ){
-
-            return;
-
-        }
-
-
-        try{
-
-            await updateDoc(
-
-                doc(
-                    db,
-                    "bookings",
-                    id
-                ),
-
-                {
-
-                    status:
-                    "Cancelled"
-
-                }
-
-            );
-
-
-            alert(
-                "❌ Booking Cancelled!"
-            );
-
-
-        }catch(error){
-
-            console.error(error);
-
-            alert(
-                "❌ Booking Cancel नहीं हुई।"
-            );
-
-        }
-
-    };
-
-
-
-/* DELETE */
-
-window.deleteBooking =
-    async function(id){
-
-        if(
-            !confirm(
-                "⚠️ यह Booking permanently delete हो जाएगी। क्या आप जारी रखना चाहते हैं?"
-            )
-        ){
-
-            return;
-
-        }
-
-
-        try{
-
-            await deleteDoc(
-
-                doc(
-                    db,
-                    "bookings",
-                    id
-                )
-
-            );
-
-
-            alert(
-                "🗑 Booking delete हो गई।"
-            );
-
-
-        }catch(error){
-
-            console.error(error);
-
-            alert(
-                "❌ Booking delete नहीं हुई।"
-            );
-
-        }
-
-    };
-
-
-
-/* DASHBOARD */
-
-function updateDashboard(){
-
-    const total =
-        bookings.length;
-
-
-    const pending =
-        bookings.filter(function(b){
-
-            return !b.status ||
-                   b.status === "Pending";
-
-        }).length;
-
-
-    const confirmed =
-        bookings.filter(function(b){
-
-            return b.status === "Confirmed";
-
-        }).length;
-
-
-    const cancelled =
-        bookings.filter(function(b){
-
-            return b.status === "Cancelled";
-
-        }).length;
-
-
-    document.getElementById(
-        "totalBookings"
-    ).innerText = total;
-
-
-    document.getElementById(
-        "pendingBookings"
-    ).innerText = pending;
-
-
-    document.getElementById(
-        "confirmedBookings"
-    ).innerText = confirmed;
-
-
-    document.getElementById(
-        "cancelledBookings"
-    ).innerText = cancelled;
-
-}
-
-
-
-/* SECURITY */
-
-function escapeHTML(value){
-
-    return String(value)
-
-    .replace(/&/g,"&amp;")
-
-    .replace(/</g,"&lt;")
-
-    .replace(/>/g,"&gt;")
-
-    .replace(/"/g,"&quot;")
-
-    .replace(/'/g,"&#039;");
-
-}
-
-
-function escapeAttribute(value){
-
-    return escapeHTML(value);
-
-}
-
-
-
-/* START */
-
-loadBookings();
-
-</script>
-
-</body>
-</html>
+                com
