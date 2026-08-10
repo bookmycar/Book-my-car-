@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="hi">
+<!DOCTYPE html><html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Book My Car</title>
-
-<style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Book My Car</title><style>
 *{box-sizing:border-box}
 
 body{
@@ -17,9 +12,9 @@ body{
 }
 
 header{
-    background:#007bff;
+    background:linear-gradient(135deg,#007bff,#0056d6);
     color:white;
-    padding:25px 15px;
+    padding:28px 15px;
     text-align:center;
 }
 
@@ -41,8 +36,8 @@ header p{
 .booking-box{
     background:white;
     padding:25px;
-    border-radius:15px;
-    box-shadow:0 4px 15px rgba(0,0,0,.12);
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(0,0,0,.12);
 }
 
 .booking-box h2{
@@ -53,7 +48,7 @@ header p{
 
 label{
     display:block;
-    margin-top:12px;
+    margin-top:13px;
     font-weight:bold;
 }
 
@@ -92,50 +87,41 @@ button:disabled{
     font-weight:bold;
 }
 
+.note{
+    margin-top:15px;
+    padding:12px;
+    background:#eef5ff;
+    border-radius:8px;
+    font-size:14px;
+    text-align:center;
+}
+
 footer{
     text-align:center;
     padding:20px;
     color:#777;
 }
-</style>
-</head>
-
-<body>
-
-<header>
+</style></head><body><header>
     <h1>🚗 Book My Car</h1>
     <p>आसान और भरोसेमंद Car Booking</p>
-</header>
-
-<div class="container">
-
-<div class="booking-box">
-
-<h2>🚘 Car Booking</h2>
-
-<label>Customer Name</label>
-<input
-    type="text"
-    id="customerName"
-    placeholder="अपना नाम लिखें"
->
+</header><div class="container"><div class="booking-box"><h2>🚘 Car Booking</h2><label>Customer Name</label>
+<input type="text" id="customerName"
+placeholder="अपना नाम लिखें">
 
 <label>Mobile Number</label>
-<input
-    type="tel"
-    id="customerPhone"
-    placeholder="10 अंकों का मोबाइल नंबर"
-    maxlength="10"
->
+<input type="tel" id="customerPhone"
+placeholder="10 अंकों का मोबाइल नंबर"
+maxlength="10"
+inputmode="numeric">
 
 <label>Car</label>
 <select id="carName">
-    <option value="">Car चुनें</option>
-    <option value="Swift Dzire">Swift Dzire</option>
-    <option value="Ertiga">Ertiga</option>
-    <option value="Innova">Innova</option>
-    <option value="Bolero">Bolero</option>
-    <option value="Scorpio">Scorpio</option>
+<option value="">Car चुनें</option>
+<option value="Swift Dzire">Swift Dzire</option>
+<option value="Ertiga">Ertiga</option>
+<option value="Innova">Innova</option>
+<option value="Bolero">Bolero</option>
+<option value="Scorpio">Scorpio</option>
 </select>
 
 <label>Booking Date</label>
@@ -145,35 +131,26 @@ footer{
 <input type="time" id="bookingTime">
 
 <label>Advance Amount ₹</label>
-<input
-    type="number"
-    id="advanceAmount"
-    placeholder="Advance राशि"
->
+<input type="number"
+id="advanceAmount"
+placeholder="Advance राशि"
+min="0">
 
-<button
-    type="button"
-    id="bookButton"
-    onclick="saveCustomerBooking()"
->
-    🚗 BOOK NOW
+<button type="button"
+id="bookButton"
+onclick="saveCustomerBooking()">
+🚗 BOOK NOW
 </button>
 
-<a class="admin-link" href="Admin.html">
-    🔐 Admin Panel
-</a>
-
-</div>
-</div>
-
-<footer>
-    © 2026 Book My Car
-</footer>
-
-
-<!-- FIREBASE -->
-
-<script type="module">
+<div class="note">
+    Booking भेजने के बाद आपका Booking ID मिलेगा।
+    Admin confirmation के बाद booking confirm होगी।
+</div><a class="admin-link" href="Admin.html">
+🔐 Admin Panel
+</a></div>
+</div><footer>
+© 2026 Book My Car
+</footer><script type="module">
 
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -188,11 +165,17 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 const firebaseConfig = {
+
     apiKey: "AIzaSyDD-jSNG_HfhW4aTXtdf0kpdclaDVbgrNA",
+
     authDomain: "book-my-car-a97cf.firebaseapp.com",
+
     projectId: "book-my-car-a97cf",
+
     storageBucket: "book-my-car-a97cf.firebasestorage.app",
+
     messagingSenderId: "546652899903",
+
     appId: "1:546652899903:web:c280a58db101e01d1d468a"
 };
 
@@ -205,10 +188,12 @@ const db = getFirestore(app);
 window.saveCustomerBooking = async function(){
 
     const customer =
-        document.getElementById("customerName").value.trim();
+        document.getElementById("customerName")
+        .value.trim();
 
     const phone =
-        document.getElementById("customerPhone").value.trim();
+        document.getElementById("customerPhone")
+        .value.trim();
 
     const car =
         document.getElementById("carName").value;
@@ -249,12 +234,38 @@ window.saveCustomerBooking = async function(){
     }
 
 
+    if(time === ""){
+        alert("कृपया Booking Time चुनें।");
+        return;
+    }
+
+
+    if(advance < 0){
+        alert("Advance राशि सही डालें।");
+        return;
+    }
+
+
+    const selectedDateTime =
+        new Date(date + "T" + time);
+
+    const now = new Date();
+
+
+    if(selectedDateTime <= now){
+        alert("कृपया भविष्य की Date और Time चुनें।");
+        return;
+    }
+
+
     const button =
         document.getElementById("bookButton");
 
+
     button.disabled = true;
 
-    button.innerText = "⏳ Booking भेजी जा रही है...";
+    button.innerText =
+        "⏳ Booking भेजी जा रही है...";
 
 
     try{
@@ -286,16 +297,23 @@ window.saveCustomerBooking = async function(){
 
         const docRef =
             await addDoc(
-                collection(db, "bookings"),
+                collection(db,"bookings"),
                 bookingData
             );
 
 
         alert(
             "✅ Booking सफलतापूर्वक भेज दी गई!\n\n" +
-            "Booking ID: " +
+
+            "Booking ID:\n" +
+
             docRef.id +
-            "\n\nStatus: Pending"
+
+            "\n\n" +
+
+            "Status: Pending\n\n" +
+
+            "Admin confirmation के बाद booking Confirm होगी।"
         );
 
 
@@ -330,7 +348,5 @@ window.saveCustomerBooking = async function(){
 
 };
 
-</script>
-
-</body>
+</script></body>
 </html>
