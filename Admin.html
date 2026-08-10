@@ -1,7 +1,6 @@
 <!DOCTYPE html><html lang="hi">
 <head><meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0"><title>Book My Car - Admin</title><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Book My Car - Admin Panel</title><style>
 
 *{
     box-sizing:border-box;
@@ -11,24 +10,75 @@ body{
     margin:0;
     font-family:Arial,sans-serif;
     background:#f2f6ff;
+    color:#222;
 }
 
 header{
-    background:linear-gradient(135deg,#007bff,#0056d6);
+    background:linear-gradient(135deg,#007bff,#004bb5);
     color:white;
-    padding:25px;
+    padding:24px 15px;
     text-align:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
 }
 
 header h1{
     margin:0;
+    font-size:26px;
+}
+
+header p{
+    margin:8px 0 0;
+    opacity:.9;
 }
 
 .container{
     width:94%;
     max-width:1100px;
-    margin:25px auto;
+    margin:22px auto;
 }
+
+/* DASHBOARD */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.stat{
+    background:white;
+    border-radius:14px;
+    padding:18px;
+    text-align:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.10);
+}
+
+.stat h3{
+    margin:0;
+    font-size:28px;
+    color:#007bff;
+}
+
+.stat p{
+    margin:7px 0 0;
+    color:#666;
+    font-weight:bold;
+}
+
+.pending h3{
+    color:#f0ad00;
+}
+
+.confirmed h3{
+    color:#198754;
+}
+
+.cancelled h3{
+    color:#dc3545;
+}
+
+/* MAIN CARD */
 
 .card{
     background:white;
@@ -38,30 +88,91 @@ header h1{
     margin-bottom:20px;
 }
 
+.card h2{
+    margin-top:0;
+}
+
+/* SEARCH */
+
+.searchBox{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.searchBox input{
+    flex:1;
+    padding:13px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+    outline:none;
+}
+
+.searchBox input:focus{
+    border-color:#007bff;
+}
+
+/* BOOKING */
+
 .booking{
     border:1px solid #ddd;
-    border-radius:12px;
+    border-radius:14px;
     padding:18px;
-    margin-bottom:15px;
+    margin-bottom:16px;
+    background:#fff;
+    transition:.2s;
+}
+
+.booking:hover{
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
 }
 
 .booking h3{
-    margin-top:0;
+    margin:0 0 12px;
     color:#007bff;
 }
 
-.info{
-    line-height:1.8;
+.bookingId{
+    font-size:12px;
+    color:#888;
+    word-break:break-all;
 }
+
+.info{
+    line-height:1.9;
+}
+
+.info b{
+    color:#333;
+}
+
+/* STATUS */
 
 .status{
     display:inline-block;
-    padding:6px 12px;
+    padding:5px 12px;
     border-radius:20px;
+    font-weight:bold;
+    font-size:13px;
+}
+
+.status-pending{
     background:#fff3cd;
     color:#856404;
-    font-weight:bold;
 }
+
+.status-confirmed{
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+.status-cancelled{
+    background:#f8d7da;
+    color:#842029;
+}
+
+/* BUTTONS */
 
 button{
     border:0;
@@ -71,6 +182,11 @@ button{
     cursor:pointer;
     font-weight:bold;
     margin:5px 5px 0 0;
+    font-size:14px;
+}
+
+button:active{
+    transform:scale(.97);
 }
 
 .confirm{
@@ -89,58 +205,128 @@ button{
     background:#555;
 }
 
+.refresh{
+    background:#6f42c1;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:35px 15px;
+    color:#777;
+}
+
+/* BACK */
+
 .back{
     display:block;
     text-align:center;
-    margin:20px;
+    margin:25px;
     color:#007bff;
     text-decoration:none;
     font-weight:bold;
 }
 
-.empty{
-    text-align:center;
-    padding:30px;
-    color:#777;
+/* MOBILE */
+
+@media(max-width:700px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .stat h3{
+        font-size:23px;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+    .booking{
+        padding:15px;
+    }
+
+    button{
+        width:100%;
+        margin-top:8px;
+    }
+
+    .searchBox{
+        flex-direction:column;
+    }
+
 }
 
-</style></head><body><header><h1>🔐 Book My Car Admin Panel</h1><p>Booking Management</p></header><div class="container"><div class="card"><h2>📋 All Bookings</h2><div id="bookingList">
+</style></head><body><header><h1>🔐 Book My Car Admin Panel</h1><p>Booking Management Dashboard</p></header><div class="container"><!-- STATISTICS --><div class="stats"><div class="stat">
+<h3 id="totalCount">0</h3>
+<p>📋 Total Bookings</p>
+</div><div class="stat pending">
+<h3 id="pendingCount">0</h3>
+<p>⏳ Pending</p>
+</div><div class="stat confirmed">
+<h3 id="confirmedCount">0</h3>
+<p>✅ Confirmed</p>
+</div><div class="stat cancelled">
+<h3 id="cancelledCount">0</h3>
+<p>❌ Cancelled</p>
+</div></div><!-- BOOKINGS --><div class="card"><h2>📋 All Bookings</h2><div class="searchBox"><input
+type="text"
+id="searchInput"
+placeholder="🔎 Customer, mobile, car या Booking ID खोजें..."
+
+«»
+
+<button class="refresh" onclick="location.reload()">
+🔄 Refresh
+</button></div><div id="bookingList">
 Loading...
 </div></div></div><a class="back" href="index.html">
 ⬅️ Main Website पर वापस जाएँ
 </a><script type="module">
 
 import { initializeApp }
+
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
+
 import {
-    getFirestore,
-    collection,
-    onSnapshot,
-    doc,
-    updateDoc,
-    deleteDoc,
-    query,
-    orderBy
+
+getFirestore,
+collection,
+onSnapshot,
+doc,
+updateDoc,
+deleteDoc,
+query,
+orderBy
+
 }
+
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+/* FIREBASE CONFIG */
+
 const firebaseConfig = {
 
-    apiKey: "AIzaSyDD-jSNG_HfhW4aTXtdf0kpdclaDVbgrNA",
+apiKey:"AIzaSyDD-jSNG_HfhW4aTXtdf0kpdclaDVbgrNA",
 
-    authDomain: "book-my-car-a97cf.firebaseapp.com",
+authDomain:"book-my-car-a97cf.firebaseapp.com",
 
-    projectId: "book-my-car-a97cf",
+projectId:"book-my-car-a97cf",
 
-    storageBucket: "book-my-car-a97cf.firebasestorage.app",
+storageBucket:"book-my-car-a97cf.firebasestorage.app",
 
-    messagingSenderId: "546652899903",
+messagingSenderId:"546652899",
 
-    appId: "1:546652899903:web:c280a58db101e01d1d468a"
+appId:"1:546652899:web:c280a58db101e01d1d468a"
+
 };
 
+
+/* FIREBASE START */
 
 const app = initializeApp(firebaseConfig);
 
@@ -150,229 +336,509 @@ const db = getFirestore(app);
 const bookingList =
 document.getElementById("bookingList");
 
+const searchInput =
+document.getElementById("searchInput");
 
-const bookingsQuery =
-query(
-    collection(db,"bookings"),
-    orderBy("createdAt","desc")
+
+let allBookings = [];
+
+
+/* QUERY */
+
+const bookingsQuery = query(
+
+collection(db,"bookings"),
+
+orderBy("createdAt","desc")
+
 );
 
+
+/* LIVE DATA */
 
 onSnapshot(
 
-    bookingsQuery,
+bookingsQuery,
 
-    (snapshot)=>{
+(snapshot)=>{
 
-        bookingList.innerHTML = "";
+allBookings = [];
 
-        if(snapshot.empty){
+snapshot.forEach((bookingDoc)=>{
 
-            bookingList.innerHTML =
-            '<div class="empty">अभी कोई Booking नहीं है।</div>';
+allBookings.push({
 
-            return;
-        }
+id:bookingDoc.id,
 
+data:bookingDoc.data()
 
-        snapshot.forEach((bookingDoc)=>{
+});
 
-            const data =
-            bookingDoc.data();
-
-            const id =
-            bookingDoc.id;
+});
 
 
-            const div =
-            document.createElement("div");
+updateStatistics();
 
-            div.className = "booking";
+displayBookings();
 
+},
 
-            div.innerHTML = `
+(error)=>{
 
-                <h3>
-                    🚗 ${escapeHTML(data.car || "Car")}
-                </h3>
+console.error(error);
 
-                <div class="info">
+bookingList.innerHTML = `
 
-                    <b>Booking ID:</b>
-                    ${escapeHTML(id)}
-                    <br>
+<div class="empty">
 
-                    <b>Customer:</b>
-                    ${escapeHTML(data.customer || "")}
-                    <br>
+<h3>⚠️ Bookings Load नहीं हो सकीं</h3>
 
-                    <b>Mobile:</b>
-                    ${escapeHTML(data.phone || "")}
-                    <br>
+<p>
 
-                    <b>Date:</b>
-                    ${escapeHTML(data.date || "")}
-                    <br>
+Firebase Rules या Firestore connection check करें।
 
-                    <b>Time:</b>
-                    ${escapeHTML(data.time || "")}
-                    <br>
+</p>
 
-                    <b>Advance:</b>
-                    ₹${Number(data.advance || 0)}
-                    <br>
+</div>
 
-                    <b>Owner:</b>
-                    ${escapeHTML(data.owner || "Pending")}
-                    <br>
+`;
 
-                    <b>Driver:</b>
-                    ${escapeHTML(data.driver || "Pending")}
-                    <br>
-
-                    <b>Status:</b>
-                    <span class="status">
-                    ${escapeHTML(data.status || "Pending")}
-                    </span>
-
-                </div>
-
-                <br>
-
-                <button class="confirm"
-                onclick="confirmBooking('${id}')">
-                ✅ Confirm
-                </button>
-
-                <button class="cancel"
-                onclick="cancelBooking('${id}')">
-                ❌ Cancel
-                </button>
-
-                <a href="tel:${escapeHTML(data.phone || "")}">
-                <button class="call">
-                📞 Call Customer
-                </button>
-                </a>
-
-                <button class="delete"
-                onclick="deleteBooking('${id}')">
-                🗑️ Delete
-                </button>
-
-            `;
-
-
-            bookingList.appendChild(div);
-
-        });
-
-    },
-
-    (error)=>{
-
-        console.error(error);
-
-        bookingList.innerHTML =
-        "<div class='empty'>Bookings load नहीं हो सकीं। Firebase Rules check करें।</div>";
-
-    }
+}
 
 );
 
+
+/* STATISTICS */
+
+function updateStatistics(){
+
+let total = allBookings.length;
+
+let pending = 0;
+
+let confirmed = 0;
+
+let cancelled = 0;
+
+
+allBookings.forEach(item=>{
+
+let status =
+String(item.data.status || "Pending")
+.toLowerCase();
+
+
+if(status === "confirmed"){
+
+confirmed++;
+
+}
+
+else if(status === "cancelled"){
+
+cancelled++;
+
+}
+
+else{
+
+pending++;
+
+}
+
+});
+
+
+document.getElementById("totalCount").textContent =
+total;
+
+document.getElementById("pendingCount").textContent =
+pending;
+
+document.getElementById("confirmedCount").textContent =
+confirmed;
+
+document.getElementById("cancelledCount").textContent =
+cancelled;
+
+}
+
+
+/* DISPLAY */
+
+function displayBookings(){
+
+const search =
+searchInput.value
+.toLowerCase()
+.trim();
+
+
+bookingList.innerHTML = "";
+
+
+const filtered =
+allBookings.filter(item=>{
+
+const data = item.data;
+
+const text = `
+
+${data.car || ""}
+
+${data.customer || ""}
+
+${data.phone || ""}
+
+${data.owner || ""}
+
+${data.driver || ""}
+
+${item.id}
+
+${data.date || ""}
+
+${data.time || ""}
+
+`.toLowerCase();
+
+
+return text.includes(search);
+
+});
+
+
+if(filtered.length === 0){
+
+bookingList.innerHTML = `
+
+<div class="empty">
+
+📭 कोई Booking नहीं मिली।
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+filtered.forEach(item=>{
+
+const data = item.data;
+
+const id = item.id;
+
+
+let status =
+String(data.status || "Pending");
+
+
+let statusClass =
+"status-pending";
+
+
+if(status.toLowerCase() === "confirmed"){
+
+statusClass =
+"status-confirmed";
+
+}
+
+else if(status.toLowerCase() === "cancelled"){
+
+statusClass =
+"status-cancelled";
+
+}
+
+
+const div =
+document.createElement("div");
+
+div.className = "booking";
+
+
+div.innerHTML = `
+
+<h3>
+🚗 ${escapeHTML(data.car || "Car")}
+</h3>
+
+
+<div class="bookingId">
+
+Booking ID:
+${escapeHTML(id)}
+
+</div>
+
+
+<hr>
+
+
+<div class="info">
+
+<b>👤 Customer:</b>
+${escapeHTML(data.customer || "Not Available")}
+<br>
+
+
+<b>📱 Mobile:</b>
+${escapeHTML(data.phone || "Not Available")}
+<br>
+
+
+<b>📅 Date:</b>
+${escapeHTML(data.date || "Not Available")}
+<br>
+
+
+<b>⏰ Time:</b>
+${escapeHTML(data.time || "Not Available")}
+<br>
+
+
+<b>💰 Advance:</b>
+₹${Number(data.advance || 0)}
+<br>
+
+
+<b>👨‍💼 Owner:</b>
+${escapeHTML(data.owner || "Pending")}
+<br>
+
+
+<b>🚘 Driver:</b>
+${escapeHTML(data.driver || "Pending")}
+<br>
+
+
+<b>📌 Status:</b>
+
+<span class="status ${statusClass}">
+
+${escapeHTML(status)}
+
+</span>
+
+</div>
+
+
+<br>
+
+
+<button
+class="confirm"
+onclick="confirmBooking('${safeId(id)}')">
+
+✅ Confirm
+
+</button>
+
+
+<button
+class="cancel"
+onclick="cancelBooking('${safeId(id)}')">
+
+❌ Cancel
+
+</button>
+
+
+<a href="tel:${escapeHTML(data.phone || "")}">
+
+<button class="call">
+
+📞 Call Customer
+
+</button>
+
+</a>
+
+
+<button
+class="delete"
+onclick="deleteBooking('${safeId(id)}')">
+
+🗑️ Delete
+
+</button>
+
+`;
+
+
+bookingList.appendChild(div);
+
+});
+
+}
+
+
+/* SEARCH */
+
+searchInput.addEventListener(
+
+"input",
+
+displayBookings
+
+);
+
+
+/* CONFIRM */
 
 window.confirmBooking =
 async function(id){
 
-    try{
+try{
 
-        await updateDoc(
-            doc(db,"bookings",id),
-            {
-                status:"Confirmed"
-            }
-        );
+await updateDoc(
 
-        alert("✅ Booking Confirm हो गई।");
+doc(db,"bookings",id),
 
-    }catch(error){
+{
 
-        console.error(error);
+status:"Confirmed"
 
-        alert("Booking Confirm नहीं हो सकी।");
+}
 
-    }
+);
+
+alert("✅ Booking Confirm हो गई।");
+
+}
+
+catch(error){
+
+console.error(error);
+
+alert(
+"❌ Booking Confirm नहीं हो सकी।"
+);
+
+}
 
 };
 
+
+/* CANCEL */
 
 window.cancelBooking =
 async function(id){
 
-    if(!confirm("क्या आप यह Booking Cancel करना चाहते हैं?")){
-        return;
-    }
+if(
+!confirm(
+"क्या आप यह Booking Cancel करना चाहते हैं?"
+)
+){
+
+return;
+
+}
 
 
-    try{
+try{
 
-        await updateDoc(
-            doc(db,"bookings",id),
-            {
-                status:"Cancelled"
-            }
-        );
+await updateDoc(
 
-        alert("❌ Booking Cancel हो गई।");
+doc(db,"bookings",id),
 
-    }catch(error){
+{
 
-        console.error(error);
+status:"Cancelled"
 
-        alert("Booking Cancel नहीं हो सकी।");
+}
 
-    }
+);
+
+alert("❌ Booking Cancel हो गई।");
+
+}
+
+catch(error){
+
+console.error(error);
+
+alert(
+"❌ Booking Cancel नहीं हो सकी।"
+);
+
+}
 
 };
 
+
+/* DELETE */
 
 window.deleteBooking =
 async function(id){
 
-    if(!confirm("क्या आप इस Booking को Delete करना चाहते हैं?")){
-        return;
-    }
+if(
+!confirm(
+"⚠️ क्या आप इस Booking को हमेशा के लिए Delete करना चाहते हैं?"
+)
+){
+
+return;
+
+}
 
 
-    try{
+try{
 
-        await deleteDoc(
-            doc(db,"bookings",id)
-        );
+await deleteDoc(
 
-        alert("🗑️ Booking Delete हो गई।");
+doc(db,"bookings",id)
 
-    }catch(error){
+);
 
-        console.error(error);
+alert("🗑️ Booking Delete हो गई।");
 
-        alert("Booking Delete नहीं हो सकी।");
+}
 
-    }
+catch(error){
+
+console.error(error);
+
+alert(
+"❌ Booking Delete नहीं हो सकी।"
+);
+
+}
 
 };
 
 
-function escapeHTML(value){
+/* SAFE ID */
 
-    return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function safeId(value){
+
+return String(value)
+.replace(/\\/g,"\\\\")
+.replace(/'/g,"\\'");
 
 }
 
-</script></body>
-</html>
+
+/* HTML SECURITY */
+
+function escapeHTML(value){
+
+return String(value)
+
+.replace(/&/g,"&amp;")
+
+.replace(/</g,"&lt;")
+
+.replace(/>/g,"&gt;")
+
+.replace(/"/g,"&quot;")
+
+.replace(/'/g,"&#039;");
+
+}
+
+</script></body></html>
